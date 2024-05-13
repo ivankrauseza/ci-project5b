@@ -19,7 +19,7 @@ DEBUG = True
 
 SITE_ID = 1
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/']
 
 
 # Application definition

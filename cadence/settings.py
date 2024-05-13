@@ -27,6 +27,13 @@ ALLOWED_HOSTS = [
 
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,7 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -46,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'cadence.urls'
@@ -85,6 +98,25 @@ DATABASES = {
         },
     }
 }
+
+ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # username_email
+ACCOUNT_CHANGE_EMAIL = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = None
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+# SIGNUP
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_UNIQUE_EMAIL = True
+# PASSWORD
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/account/'
 
 
 # Password validation

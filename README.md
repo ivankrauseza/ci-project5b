@@ -11,6 +11,9 @@ https://fonts.google.com/specimen/Lato
 ## AllAuth - python manage.py runserver
 WARNINGS: account.EmailAddress: (models.W036) MySQL does not support unique constraints with conditions.
 
+# Media
+Determine what systems to use to manage media files.
+
 
 # References
 https://docs.allauth.org/en/latest/installation/quickstart.html

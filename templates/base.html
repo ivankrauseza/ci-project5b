@@ -23,17 +23,27 @@
 <body>
 
     <header>
-        <!-- Your header content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    Header
+                </div>
+            </div>
+        </div>
     </header>
 
     <main>
-        {% block content %}
-        <!-- Default content for child templates -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
-        <!-- Your footer content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    Footer
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!--Custom JS-->

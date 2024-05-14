@@ -46,7 +46,32 @@
         </div>
     </footer>
 
+    <!--TOAST MESSAGES-->
+    {% if messages %}
+        {% for message in messages %}
+            {% with message.level as level %}
+                {% if level == 40 %}
+                    {% include 'includes/toasts/toast_error.html' %}
+                {% elif level == 30 %}
+                    {% include 'includes/toasts/toast_warning.html' %}
+                {% elif level == 25 %}
+                    {% include 'includes/toasts/toast_success.html' %}
+                {% else %}
+                    {% include 'includes/toasts/toast_info.html' %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    {% endif %}
+
     <!--Custom JS-->
     <script src="{% static 'js/scripts.js' %}"></script>
+
+    <script >
+        $(document).ready(function () {
+            $('.toast').toast('show');
+        });
+    </script>
+
+    {% block postloadjs %}{% endblock postloadjs %}
 </body>
 </html>

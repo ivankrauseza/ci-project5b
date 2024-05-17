@@ -1,0 +1,17 @@
+a {
+  color: #359DD9;
+}
+a:hover {
+  color: #BD15E7;
+}
+
+button {
+  border: solid 1px #359DD9;
+  background-color: #359DD9;
+  color: #fff;
+}
+button:hover {
+  border: solid 1px #BD15E7;
+  background-color: #BD15E7;
+  color: #fff;
+}/*# sourceMappingURL=navigation.css.map */

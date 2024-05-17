@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Change Email{% endblock %}
+
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Email Address" %}
+{% endblock head_title %}
+{% block content %}
+
+<div class="container-fluid p-0">
+    <div class="row p-0">
+        <div class="col-12 text-start">
+
+            <div class="container p-0 account-data">
+                <div class="row p-3">
+                    <div class="col-12 py-2 text-start px-3">
+                        
+                        
+                        <div class="container-fluid">
+                            <div class="row my-3">
+                                <div class="col-6 text-start my-auto">
+                                    <h1>
+                                        <a href="#">
+                                            <i class="fa-solid fa-circle-arrow-left"></i>
+                                        </a>
+                                        CHANGE EMAIL
+                                    </h1>
+                                </div>
+                                <div class="col-6 text-end my-auto">
+                                    <a href="{% url 'account_logout' %}">
+                                        Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <div class="row p-5  bg-light rounded text-left">
+                                <div class="col-12">
+                                    {% if user.is_authenticated %}
+                                    <div class="allauth_form">
+                                        {% url 'account_email' as action_url %}
+                                        {% element form method="post" action=action_url %}
+                                            {% slot body %}
+                                                {% csrf_token %}
+                                                {% element fields form=form %}
+                                                {% endelement %}
+                                            {% endslot %}
+                                            {% slot actions %}
+                                                {% element button name="action_add" type="submit" %}
+                                                    {% trans "Change Email" %}
+                                                {% endelement %}
+                                            {% endslot %}
+                                        {% endelement %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}

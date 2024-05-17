@@ -27,11 +27,11 @@
   <div class="container toolbox">
     <div class="row py-3">
       <div class="col-6 text-start my-auto">
-          <a href="#" class="btn btn-sm support px-0"><i class="fa-solid fa-headset"></i> Customer support</a>
+        <a href="{% url 'support' %}" class="btn btn-sm support px-0"><i class="fa-solid fa-headset"></i> Customer support</a>
       </div>
       <div class="col-6 text-end my-auto">
           <div>
-            <a href="#" class="btn"><i class="fa-solid fa-basket-shopping"></i></a>
+            <a href="{% url 'basket' %}" class="btn"><i class="fa-solid fa-basket-shopping"></i></a>
             {% if user.is_authenticated %}
               <button 
               class="btn" 
@@ -64,22 +64,22 @@
                           <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                               <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                               </li>
                               <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   Shop
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="#">All Products</a></li>
-                                  <li><a class="dropdown-item" href="#">Collections</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'products' %}">All Products</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'collection' %}">Collections</a></li>
                                 </ul>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
+                                <a class="nav-link" href="{% url 'about' %}">About</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="#">Contact</a>
+                                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                               </li>
                             </ul>
                             <form class="d-flex" role="search">
@@ -108,7 +108,10 @@
                   &copy; CADENCE TOOLS 2024
               </div>
               <div class="col-12 col-md-6 text-end my-auto">
-                  <small>Privacy Policy | Customer Support</small>
+                  <small>
+                    <a href="{% url 'privacy' %}">Privacy Policy</a>
+                    |
+                    <a href="{% url 'support' %}">Customer Support</a></small>
               </div>
             </div>
         </div>

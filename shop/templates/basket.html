@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block meta_keywords %}
+key, words, go, here
+{% endblock %}
+{% block meta_desc %}
+Meta Description 
+{% endblock %}
+
+{% block content %}
+
+<section>
+            
+    <div class="container">
+    
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb my-3">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Basket</li>
+            </ol>
+        </nav>
+
+    </div>
+
+
+    <!-- BASKET -->
+    <div class="container">
+        <div class="row my-5">
+
+            <div class="col-12 col-lg-12 px-3">
+                <h1>My Basket</h1>
+            </div>
+
+            <div class="col-12 col-lg-9 px-3">
+                <h6>Your basket is empty</h6>
+                <a href="#" class="d-block p-3 my-1 bg-light">Item 1</a>
+                <a href="#" class="d-block p-3 my-1 bg-light">Item 2</a>
+            </div>
+
+            <div class="col-12 col-lg-3 px-3 text-center">
+                <h6>ORDER OVERVIEW</h6>
+                <div class="p-3 border rounded text-start">
+                    <div class="p-2">
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">BASKET</td>
+                                    <td class="text-end">&euro; 100.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">DELIVERY</td>
+                                    <td class="text-end">&euro; 10.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">VAT (23%)</td>
+                                    <td class="text-end">&euro; 13.45</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start"><strong>TOTAL</strong></td>
+                                    <td class="text-end"><strong>&euro; 123.45</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <button class="btn btn-primary w-100">PAY NOW</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

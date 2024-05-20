@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from .models import Product
 
 
 def Home(request):
@@ -33,8 +34,8 @@ def ProductSearch(request):
 
 
 def ProductList(request):
-    # messages.info(request, 'Test Toast')
-    return render(request, 'product-list.html')
+    products = Product.objects.all()
+    return render(request, 'product-list.html', {'products': products})
 
 
 def ProductCategories(request):
@@ -42,9 +43,9 @@ def ProductCategories(request):
     return render(request, 'product-list-categories.html')
 
 
-def ProductDetail(request):
-    # messages.info(request, 'Test Toast')
-    return render(request, 'product-detail.html')
+def ProductDetail(request, sku):
+    product = get_object_or_404(Product, sku=sku)
+    return render(request, 'product-detail.html', {'product': product})
 
 
 def Basket(request):

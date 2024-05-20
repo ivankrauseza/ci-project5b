@@ -10,6 +10,7 @@ urlpatterns = [
     path('customer-support/', views.Support, name='support'),
     path('search/', views.ProductSearch, name='search'),
     path('products/', views.ProductList, name='products'),
+    path('products/<str:sku>/', views.ProductDetail, name='product_detail'),
     path('products/collection/', views.ProductCategories, name='collection'),
     path('product/', views.ProductDetail, name='product-detail'),
     path('basket/', views.Basket, name='basket'),

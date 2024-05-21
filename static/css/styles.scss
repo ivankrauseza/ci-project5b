@@ -52,6 +52,7 @@ footer {
 // TYPOGRAPHY
 h1 {
     font-weight: 700;
+    padding: 0 0 16px 0;
 }
 h2 {
     font-weight: 700;
@@ -76,14 +77,8 @@ p {
 article {
     max-width: 992px;
     margin: 0;
-    h1 {
-        padding-bottom: 16px;
-        margin-bottom: 16px;
-    }
-    p {
-        margin: 0 0;
-    }
 }
+
 @media screen and (max-width: 768px) {
     .container {
         margin: 0 0;

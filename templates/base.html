@@ -27,11 +27,23 @@
   <div class="container toolbox">
     <div class="row py-3">
       <div class="col-6 text-start my-auto">
-        <a href="{% url 'support' %}" class="btn btn-sm support px-0"><i class="fa-solid fa-headset"></i> Customer support</a>
+        <a href="{% url 'support' %}" class="btn btn-sm support px-0">
+          <i class="fa-solid fa-headset"></i>
+          <span>Customer support</span>
+        </a>
       </div>
       <div class="col-6 text-end my-auto">
           <div>
-            <a href="{% url 'basket' %}" class="btn"><i class="fa-solid fa-basket-shopping"></i></a>
+            <a href="{% url 'basket' %}" class="btn">
+              <div class=" basket_item">
+                <i class="fa-solid fa-basket-shopping"></i>
+                {% if basket_item_count > 0 %}
+                  <span class="basket_count">
+                      {{ basket_item_count }}
+                  </span>
+                {% endif %}
+              </div>
+            </a>
             {% if user.is_authenticated %}
               <button 
               class="btn" 
@@ -82,10 +94,12 @@
                                 <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                               </li>
                             </ul>
-                            <form class="d-flex" role="search">
-                              <input class="form-control me-2" type="search" placeholder="Product Search" aria-label="Search">
-                              <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+                            <form class="d-flex" method="GET" action="{% url 'search' %}">
+                              <input class="form-control mr-sm-2" type="search" placeholder="Product Search" aria-label="Search" name="q">
+                              <button class="btn my-2 my-sm-0" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                              </button>
+                          </form>
                           </div>
                         </div>
                       </nav>
@@ -102,18 +116,35 @@
     </main>
 
     <footer>
+
         <div class="container">
             <div class="row py-3">
               <div class="col-12 col-md-6 text-start my-auto">
-                  &copy; CADENCE TOOLS 2024
+                <img src="{% static 'img/ireland.svg' %}"> &copy; CADENCE TOOLS 2024
               </div>
               <div class="col-12 col-md-6 text-end my-auto">
                   <small>
+                    <a href="{% url 'home' %}">Home</a>
+                    <span class="px-1 text-secondary">|</span>
+                    <a href="{% url 'about' %}">About</a>
+                    <span class="px-1 text-secondary">|</span>
                     <a href="{% url 'privacy' %}">Privacy Policy</a>
-                    |
-                    <a href="{% url 'support' %}">Customer Support</a></small>
+                    <span class="px-1 text-secondary">|</span>
+                    <a href="{% url 'support' %}">Customer Support</a>
+                    <span class="px-1 text-secondary">|</span>
+                    <a href="{% url 'contact' %}">Contact</a>
+                  </small>
               </div>
             </div>
+        </div>
+
+        <div class="container">
+          <div class="row my-5">
+            <div class="col-12 text-center">
+              <small>transactions processed by:</small><br>
+              <img src="https://images.ctfassets.net/fzn2n1nzq965/6XFEUA9FzMBMphYdcUab19/37a1e07201366a351f7956560ccac09d/Stripe_wordmark_-_slate.svg" width="64px">
+            </div>
+          </div>
         </div>
     </footer>
 

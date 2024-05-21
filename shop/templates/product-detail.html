@@ -12,6 +12,8 @@ key, words, go, here
 Meta Description 
 {% endblock %}
 
+{% load static %}
+
 {% block content %}
 
 <section>
@@ -20,8 +22,8 @@ Meta Description
     
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb my-3">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">{{ product.collection }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
             </ol>
         </nav>
@@ -32,33 +34,52 @@ Meta Description
     <div class="container">
         <div class="row p-3 p-lg-5">
             <div class="col-12 col-md-6 col-lg-6 p-3 p-lg-5">
-                <span style="width:100%;padding-top:100%;background-color:#cccccc; display:block;"></span>
+
+                <div class="product-slider">
+                    {% for media in media_files %}
+                        <img src="{{ media.file.url }}" alt="{{ product.name }}">
+                    {% empty %}
+                        <img src="{% static 'img/placeholder_no_image.png' %}">
+                    {% endfor %}
+                </div>
+
             </div>
             <div class="col-12 col-md-6 col-lg-6 p-3 p-lg-5">
-                <small>{{ product.sku }}</small>
-                <h1>{{ product.name }}</h1>
-                <p>{{ product.blurb }}</p>
-                <p>Price: {{ product.price }}</p>
-                <p>Stock: {{ product.stock }}</p>
-                {% if product.blocked %}
-                    <p>Status: Blocked</p>
-                {% else %}
-                    <p>Status: Available</p>
-                {% endif %}
-                <hr>
-                <button class="btn btn-primary">ADD TO CART</button>
-            </div>
-            <div class="col-12 col-md-6 col-lg-6 p-3 p-lg-5">
-                <p>Description: {{ product.desc }}</p>
-            </div>
-            <div class="col-12 col-md-6 col-lg-6 p-3 p-lg-5">
-                <h6>Attributes</h6>
-                <p>Collection: {{ product.collection }}</p>
-                <p>SKU: {{ product.sku }}</p>
-                <p>Brand: {{ product.brand }}</p>
-                <p>Type: {{ product.type }}</p>
-                <p>Created: {{ product.created }}</p>
-                <p>Updated: {{ product.updated }}</p>
+                <div class="detail">
+                    <small>{{ product.sku }}</small>
+                    <h1>{{ product.name }}</h1>
+                    <h4 class="price my-3">&euro; {{ product.price }}</h4>
+                    <p>{{ product.blurb }}</p>
+                    
+                    <div class="my-5">
+                        <small>
+                            {% if product.blocked %}
+                                <div class="status">
+                                    <span>Status: <strong class="text-red">Unvailable</strong></span>
+                                </div>
+                            {% else %}
+                                {% if user.is_authenticated %}
+                                    {% if product_in_basket %}
+                                        <a class="btn btn-warning" href="{% url 'basket' %}">Currently in the Basket</a>
+                                    {% else %}
+                                        <form method="post" class="form-inline">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <button type="submit" class="btn btn-cart">ADD TO CART <i class="fa-solid fa-circle-plus"></i></button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    <a class="btn btn-warning btn-sm" href="{% url 'account_login' %}">
+                                        Please login to add to your basket
+                                    </a>
+                                {% endif %}
+                                <div class="status">
+                                    <span>Status: <strong class="text-success">Available</strong></span> | <span>Stock: <strong class="text-dark">{{ product.stock }}</strong></span>
+                                </div>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -66,3 +87,24 @@ Meta Description
 </section>
 
 {% endblock %}
+
+{% block postloadjs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.product-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 2000,
+            dots: true,
+            infinite: false,
+            speed: 400,
+            fade: true,
+            cssEase: 'linear',
+            prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+            nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+        });
+    });
+</script>
+{% endblock postloadjs %}

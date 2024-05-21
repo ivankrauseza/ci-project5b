@@ -1,0 +1,152 @@
+@charset "UTF-8";
+.basket_item {
+  position: relative;
+}
+.basket_item .basket_count {
+  background-color: #FC5C42;
+  color: #fff;
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Optional CSS styling for the slider */
+.product-slider {
+  float: left;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.slick-list {
+  z-index: 777 !important;
+  padding: 0 32px;
+}
+
+.slick-prev,
+.slick-next {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 999 !important;
+  border: none !important;
+  background-color: #fff;
+  color: #FC4629;
+  top: 45%;
+  transform: translate(0%, -50%);
+}
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: #fff;
+  color: #FC4629;
+}
+
+.slick-prev {
+  left: 0;
+}
+
+.slick-next {
+  right: 0;
+}
+
+/* Styling for the navigation dots */
+.slick-dots {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.slick-dots li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.slick-dots li button {
+  font-size: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.slick-dots li button:before {
+  content: "•";
+  font-size: 18px;
+  color: #999; /* Change the color of the navigation dots */
+}
+
+.slick-dots li button[aria-selected=true]:before {
+  color: #FC5C42; /* Change the color of the navigation dots */
+}
+
+.price {
+  color: #FC5C42 !important;
+}
+
+.card {
+  border: none;
+  border-radius: 0;
+}
+.card img.card-img-top {
+  border-radius: 0;
+}
+.card sup.sku {
+  color: #999;
+}
+
+.detail small {
+  color: #888;
+}
+.detail h1, .detail p {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+.detail form {
+  float: left;
+  display: block;
+  width: 100%;
+}
+.detail label {
+  float: left;
+  display: block;
+  width: 100%;
+  line-height: 32px;
+}
+.detail .quantity {
+  float: left;
+  width: -moz-fit-content;
+  width: fit-content;
+  line-height: 32px;
+  height: 32px;
+  padding: 0 1em;
+  border: none;
+  background-color: #eeeeee;
+}
+.detail .btn-cart {
+  float: left;
+  width: -moz-fit-content;
+  width: fit-content;
+  line-height: 32px;
+  height: 32px;
+  padding: 0 1em;
+  border: none;
+  border-radius: 0;
+  background-color: #FC5C42;
+  color: #fff;
+  font-size: 0.9em;
+}
+.detail .btn-cart i {
+  margin-left: 8px;
+}
+.detail .btn-cart:hover {
+  background-color: #FC4629;
+}
+.detail .status {
+  line-height: 48px;
+}/*# sourceMappingURL=shop.css.map */

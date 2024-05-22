@@ -120,7 +120,9 @@
         <div class="container">
             <div class="row py-3">
               <div class="col-12 col-md-6 text-start my-auto">
-                <img src="{% static 'img/ireland.svg' %}"> &copy; CADENCE TOOLS 2024
+                <small>
+                  <img src="{% static 'img/ireland.svg' %}" height="16px"> &copy; Cadence Tools 2024
+                </small>
               </div>
               <div class="col-12 col-md-6 text-end my-auto">
                   <small>
@@ -129,6 +131,8 @@
                     <a href="{% url 'about' %}">About</a>
                     <span class="px-1 text-secondary">|</span>
                     <a href="{% url 'privacy' %}">Privacy Policy</a>
+                    <span class="px-1 text-secondary">|</span>
+                    <a href="{% url 'cookie' %}">Cookie Policy</a>
                     <span class="px-1 text-secondary">|</span>
                     <a href="{% url 'support' %}">Customer Support</a>
                     <span class="px-1 text-secondary">|</span>

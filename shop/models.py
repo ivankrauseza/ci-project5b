@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 
 # Error if value is less than 0 :
@@ -128,6 +129,38 @@ class Media(models.Model):
         super().save(*args, **kwargs)
 
 
+class SalesOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+    number = models.CharField(max_length=50, unique=True)  # Unique sales order number
+    billing_name = models.CharField(max_length=255)
+    billing_address = models.TextField()
+    billing_phone = models.CharField(max_length=20, blank=True)  # Optional billing phone number
+    shipping_name = models.CharField(max_length=255, blank=True)  # Optional shipping name
+    shipping_address = models.TextField(blank=True)  # Optional shipping address
+    shipping_phone = models.CharField(max_length=20, blank=True)  # Optional shipping phone number
+    items_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    delivery_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    vat_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    order_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+
+    def __str__(self):
+        return f"Sales Order: {self.number}"
+    
+
+class SalesOrderItem(models.Model):
+    sales_order = models.ForeignKey(SalesOrder, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+
+    def __str__(self):
+        return f"Sales Order Item: {self.product.name} (x{self.quantity})"
+
+    class Meta:
+        unique_together = (('sales_order', 'product'),)
+
+
 """
 class Customer(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customers')
@@ -144,3 +177,18 @@ class Support(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True)
 """
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    reference_number = models.CharField(max_length=20, null=True, blank=True)
+
+
+class Support(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    order_number = models.TextField()
+    message = models.TextField()
+    reference_number = models.CharField(max_length=20, null=True, blank=True)

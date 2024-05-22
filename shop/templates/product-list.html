@@ -36,7 +36,7 @@ Meta Description
             </div>
 
             <div class="col-12 col-lg-3">
-                <h5>Filters:</h5>
+                <h5 class="mb-4">Filters:</h5>
                 <form method="GET">
                     <div class="my-3">
                         <h6>Brand</h6>
@@ -57,6 +57,17 @@ Meta Description
             <div class="col-12 col-lg-9">
                 <div class="container-fluid">
                     <div class="row">
+                        <div class="col-12 text-end mb-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sort
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="?{% if brand_filter %}{% for brand in selected_brands %}brand={{ brand }}&{% endfor %}{% endif %}order_by=asc"><i class="fa-solid fa-euro-sign"></i> Lowest first</a></li>
+                                    <li><a class="dropdown-item" href="?{% if brand_filter %}{% for brand in selected_brands %}brand={{ brand }}&{% endfor %}{% endif %}order_by=desc"><i class="fa-solid fa-euro-sign"></i> Highest first</a></li>
+                                </ul>
+                            </div>
+                        </div>
                         {% for product in products %}
                             <div class="col-12 col-md-4 col-lg-3">
                                 <a href="{% url 'product_detail' sku=product.sku %}">

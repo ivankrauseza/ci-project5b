@@ -146,3 +146,43 @@
         line-height: 48px;
     }
 }
+
+// BASKET CSS
+#basket {
+    .accordion {
+        button {
+            border: none;
+            position: relative;
+            strong {
+                position: absolute;
+                top:50%;
+                left: 16px;
+                transform: translate(0%, -50%);
+                span {
+                    display: none;
+                    font-size: 14px;
+                }
+            }
+            small {
+                font-size: 14px;
+                line-height: 100%;
+                position: absolute;
+                top:50%;
+                right: 64px;
+                transform: translate(0%, -50%);
+                span {
+                    font-weight: 700;
+                }
+            }
+            &:hover {
+                background-color: #eeeeee;
+                color: #333;
+                strong {
+                    span {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+}

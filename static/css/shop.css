@@ -149,4 +149,37 @@
 }
 .detail .status {
   line-height: 48px;
+}
+
+#basket .accordion button {
+  border: none;
+  position: relative;
+}
+#basket .accordion button strong {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translate(0%, -50%);
+}
+#basket .accordion button strong span {
+  display: none;
+  font-size: 14px;
+}
+#basket .accordion button small {
+  font-size: 14px;
+  line-height: 100%;
+  position: absolute;
+  top: 50%;
+  right: 64px;
+  transform: translate(0%, -50%);
+}
+#basket .accordion button small span {
+  font-weight: 700;
+}
+#basket .accordion button:hover {
+  background-color: #eeeeee;
+  color: #333;
+}
+#basket .accordion button:hover strong span {
+  display: inline;
 }/*# sourceMappingURL=shop.css.map */

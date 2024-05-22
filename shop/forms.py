@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction
+from .models import Transaction, Contact, Support
 
 
 class AddToBasketForm(forms.Form):
@@ -24,3 +24,37 @@ class AddToBasketForm(forms.Form):
         if self.product and quantity > self.product.stock:
             raise forms.ValidationError("Insufficient stock.")
         return quantity
+
+
+class BasketQuantityForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['quantity']  # Specify only the 'quantity' field
+
+    def clean_quantity(self):
+        data = self.cleaned_data['quantity']
+        if data < 1:
+            raise forms.ValidationError('Quantity must be at least 1.')
+        return data
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
+
+
+class SupportForm(forms.ModelForm):
+    class Meta:
+        model = Support
+        fields = ['name', 'email', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }

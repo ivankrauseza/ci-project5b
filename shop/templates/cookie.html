@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Cookie Policy
+{% endblock %}
+
+{% block meta_keywords %}
+key, words, go, here
+{% endblock %}
+
+{% block meta_desc %}
+Meta Description 
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12">
+                <article>
+                    <h1>Cookie Policy</h1>
+                    <h2>What are Cookies?</h2>
+                    <p>Cookies are small text files stored on a user's computer by websites they visit. These files contain data such as
+                        user preferences, session information, and other browsing-related details. Cookies serve various purposes, including
+                        improving website functionality, personalizing user experiences, and tracking user behavior.</p>
+                    
+                    <h5>Types of Cookies:</h5>
+                    <ol>
+                        <li><strong>Session Cookies:</strong> These cookies are temporary and are deleted once the user closes their web
+                            browser. They are used to maintain session information and enable essential website functions.</li>
+                        <li><strong>Persistent Cookies:</strong> Persistent cookies remain on the user's device even after the browser is
+                            closed. They store user preferences and login information, allowing websites to remember users across sessions.
+                        </li>
+                        <li><strong>First-Party Cookies:</strong> First-party cookies are set by the website domain the user is visiting.
+                            They are commonly used for website functionality, analytics, and customization.</li>
+                        <li><strong>Third-Party Cookies:</strong> Third-party cookies are set by domains other than the one the user is
+                            visiting. They are often used for advertising, tracking user behavior across websites, and retargeting.</li>
+                    </ol>
+                    
+                    <h5>Cookie Usage:</h5>
+                    <ul>
+                        <li><strong>Authentication:</strong> Cookies are used for user authentication, allowing websites to recognize
+                            logged-in users and provide personalized content.</li>
+                        <li><strong>Personalization:</strong> Cookies store user preferences such as language settings, font size, and
+                            customized layouts, enhancing the browsing experience.</li>
+                        <li><strong>Analytics:</strong> Cookies track user behavior and website interactions, providing valuable insights
+                            for website owners to optimize content and improve usability.</li>
+                        <li><strong>Advertising:</strong> Cookies are used for targeted advertising, enabling advertisers to deliver
+                            relevant ads based on users' interests and browsing history.</li>
+                    </ul>
+                    
+                    <h5>Cookie Management:</h5>
+                    <p>Users can manage cookies through their web browser settings. Most browsers allow users to view, delete, and control
+                        cookie preferences, including accepting or blocking cookies from specific websites.</p>
+                    
+                    <p>In summary, cookies play a crucial role in enhancing website functionality, personalizing user experiences, and
+                        enabling various online services. However, it's essential to balance their benefits with user privacy concerns and
+                        adhere to relevant data protection regulations.
+                    </p>
+
+                    <h5>Cookies used on this website:</h5>
+                    <p>
+                        Below is a list of cookies currently used by your browser. These cookies are generally required to ensure that the
+                        website functions properly.
+                    </p>
+                    <div id="cookie-list"></div>
+                </article>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+
+    const cookieDefinitions = {
+        '_ga': 'This cookie is associated with Google Analytics. It is used to distinguish unique users by assigning a randomly generated number as a client identifier.',
+        '_ga_27KQK57V0K': 'This cookie is used for tracking purposes specific to the Google Analytics property identified by the characters following the underscore.',
+        '_ga_4W8X71N76Q': 'Another instance of the _ga cookie tailored for a particular Google Analytics property.',
+        '_ga_P3CC5VXVHD': 'This is another variation of the _ga cookie, associated with a specific Google Analytics property.',
+        'csrftoken': 'This cookie is used for Cross-Site Request Forgery (CSRF) protection.',
+        'sb-yhvpkhrlzacripbzsxah-auth-token': 'This cookie is likely related to user authentication. It stores a token that verifies the user\'s identity and session on the server.',
+        '__stripe_mid': 'This cookie is associated with Stripe, a payment processing platform. It is used to identify the user and track session information to provide secure payment processing.'
+    };
+
+    // Function to get all cookies and parse them into an array of objects
+        function getCookies() {
+            let cookies = document.cookie.split(';');
+            let cookieList = [];
+
+            cookies.forEach(function(cookie) {
+                let [name, value] = cookie.split('=');
+                cookieList.push({name: name.trim(), value: value});
+            });
+
+            return cookieList;
+        }
+
+        // Function to display cookies in an HTML element
+        function displayCookies() {
+            let cookies = getCookies();
+            let cookieTable = '<div class="p-3 bg-light border">';
+            
+            cookies.forEach(function(cookie) {
+                cookieTable += '<p><strong>' + cookie.name + '</strong><br>';
+                if (cookieDefinitions[cookie.name]) {
+                    cookieTable += '<small class="text-secondary">' + cookieDefinitions[cookie.name] + '</small>';
+                }
+                else {
+                    let searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(cookie.name + ' cookie');
+                    cookieTable += '<small class="text-secondary">To find out more about this cookie, please <a href="' + searchUrl + '" target="_blank">click here</a></small>';
+                }
+                cookieTable += '</p>';
+            });
+            
+            cookieTable += '</div>';
+            $('#cookie-list').html(cookieTable);
+        }
+
+        // Execute displayCookies function when the document is ready
+        $(document).ready(function() {
+            displayCookies();
+        });
+</script>
+
+{% endblock postloadjs %}

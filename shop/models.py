@@ -5,7 +5,26 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from decimal import Decimal
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    billing_name = models.CharField(max_length=255)
+    billing_address = models.TextField()
+    billing_phone = models.CharField(max_length=20, blank=True)
+    shipping_name = models.CharField(max_length=255, blank=True)
+    shipping_address = models.TextField(blank=True)
+    shipping_phone = models.CharField(max_length=20, blank=True)
+
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
 
 
 # Error if value is less than 0 :

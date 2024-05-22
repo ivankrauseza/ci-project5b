@@ -50,8 +50,10 @@ Meta Description
                           <div class="accordion-body">
 
                             <div class="row">
-                                <div class="col-11">
-                                    <p>SKU: {{ transaction.product.sku }}</p>
+                                <div class="col-12">
+                                    <p>
+                                        SKU: {{ transaction.product.sku }}
+                                    </p>
                                     <form method="POST" action="{% url 'basket_quantity_update' transaction.id %}">
                                         {% csrf_token %}
                                         <div class="form-group">
@@ -61,7 +63,8 @@ Meta Description
                                         <button type="submit" class="btn btn-primary">Update Quantity</button>
                                       </form>
                                 </div>
-                                <div class="col-1 text-end">
+                                <div class="col-12 text-end">
+                                    <hr>
                                     <form method="post" action="{% url 'delete_transaction' transaction.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn text-danger btn-xs">
@@ -78,8 +81,9 @@ Meta Description
                     {% endfor %}
                 </div>
 
-                <div class="my-5">
-                    <h6>Billing &amp; Shipping</h6>
+                <div class="my-5 border rounded p-3">
+                    <h6>Billing &amp; Shipping information</h6>
+                    ...
                 </div>
 
                 {% else %}
@@ -87,38 +91,41 @@ Meta Description
                 {% endif %}
             </div>
 
-            <div class="col-12 col-lg-3 px-3 text-center">
-                <h6>ORDER OVERVIEW</h6>
-                <div class="p-3 border rounded text-start">
-                    <div class="p-2">
-                        <table class="w-100">
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">BASKET TOTAL</td>
-                                    <td class="text-end">&euro; {{ total_basket_value | floatformat:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">DELIVERY</td>
-                                    <td class="text-end">&euro; {{ delivery_amount | floatformat:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">VAT (23%)</td>
-                                    <td class="text-end">&euro; {{ vat_amount | floatformat:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start"><strong>TOTAL</strong></td>
-                                    <td class="text-end"><strong>&euro; {{ total_amount | floatformat:2 }}</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="col-12 col-lg-3 px-3">
+                {% if user_transactions %}
+                    <div class="p-3 border rounded text-start">
+                        <div class="p-2">
+                            <h6>ORDER OVERVIEW:</h6>
+                            <table class="w-100">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start">BASKET TOTAL</td>
+                                        <td class="text-end">&euro; {{ total_basket_value | floatformat:2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">DELIVERY</td>
+                                        <td class="text-end">&euro; {{ delivery_amount | floatformat:2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">VAT (23%)</td>
+                                        <td class="text-end">&euro; {{ vat_amount | floatformat:2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start"><strong>TOTAL</strong></td>
+                                        <td class="text-end"><strong>&euro; {{ total_amount | floatformat:2 }}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <button class="btn btn-primary w-100">PAY NOW</button>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="create_order">Create Test Order</button>
+                        </form>
                     </div>
-                    <hr>
-                    <button class="btn btn-primary w-100">PAY NOW</button>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <button type="submit" name="action" value="create_order">Create Test Order</button>
-                    </form>
-                </div>
+                {% else %}
+                {% endif %}
             </div>
 
         </div>

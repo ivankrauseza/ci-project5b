@@ -18,5 +18,9 @@ urlpatterns = [
     path('basket_quantity_update/<int:transaction_id>/', views.basket_quantity_update, name='basket_quantity_update'),
     path('delete-transaction/<int:transaction_id>/', views.delete_transaction, name='delete_transaction'),
     path('order-confirmation/<int:order_id>/', views.OrderConfirmation, name='confirm'),
+    # PROFILE
+    path('profile/', views.profile, name='profile'),
+    path('orders/', views.orders, name='orders'),
+    # ADMIN
     path('dashboard/', views.Dashboard, name='Dashboard'),
 ]

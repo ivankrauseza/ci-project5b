@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block meta_keywords %}
+key, words, go, here
+{% endblock %}
+{% block meta_desc %}
+Meta Description 
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12 py-3">
+
+                <article>
+                    <h1>My Orders</h1>
+<ul>
+    {% for order in user_orders %}
+        <li>
+            <a href="{% url 'confirm' order.id %}">Order #{{ order.number }}</a>
+            - Total: {{ order.order_total }}
+        </li>
+    {% endfor %}
+</ul>
+                </article>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

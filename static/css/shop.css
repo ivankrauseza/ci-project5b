@@ -151,21 +151,22 @@
   line-height: 48px;
 }
 
-#basket .accordion button {
+#basket .accordion h2 button {
   border: none;
   position: relative;
+  background-color: #f9f9f9;
 }
-#basket .accordion button strong {
+#basket .accordion h2 button strong {
   position: absolute;
   top: 50%;
   left: 16px;
   transform: translate(0%, -50%);
 }
-#basket .accordion button strong span {
+#basket .accordion h2 button strong span {
   display: none;
   font-size: 14px;
 }
-#basket .accordion button small {
+#basket .accordion h2 button small {
   font-size: 14px;
   line-height: 100%;
   position: absolute;
@@ -173,13 +174,13 @@
   right: 64px;
   transform: translate(0%, -50%);
 }
-#basket .accordion button small span {
+#basket .accordion h2 button small span {
   font-weight: 700;
 }
-#basket .accordion button:hover {
+#basket .accordion h2 button:hover {
   background-color: #eeeeee;
   color: #333;
 }
-#basket .accordion button:hover strong span {
+#basket .accordion h2 button:hover strong span {
   display: inline;
 }/*# sourceMappingURL=shop.css.map */

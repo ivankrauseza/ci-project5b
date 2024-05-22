@@ -358,6 +358,25 @@ def OrderConfirmation(request, order_id):
     return render(request, 'order-confirmation.html', {'order': order})
 
 
+@login_required
+def profile(request):
+    user = request.user
+    # Add more context data if needed
+    context = {
+        'user': user,
+    }
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def orders(request):
+    user_orders = SalesOrder.objects.filter(user=request.user)
+    context = {
+        'user_orders': user_orders,
+    }
+    return render(request, 'orders.html', context)
+
+
 def Dashboard(request):
     # messages.info(request, 'Test Toast')
     return render(request, 'dashboard.html')

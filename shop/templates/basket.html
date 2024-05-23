@@ -68,7 +68,7 @@ Meta Description
                                     <form method="post" action="{% url 'delete_transaction' transaction.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn text-danger btn-xs">
-                                            <i class="fa-solid fa-trash"></i>
+                                            Remove: {{ transaction.product.name }} <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -82,8 +82,158 @@ Meta Description
                 </div>
 
                 <div class="my-5 border rounded p-3">
-                    <h6>Billing &amp; Shipping information</h6>
-                    ...
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>Delivery Information</h5>
+                                <p>All information is required to place an order:</p>
+                            </div>
+                            <div class="col-6 my-4">
+                                <h6>Billing Information</h6>
+                                <hr>
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#billingModal">
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-user"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.billing_name %}
+                                                    {{ profile.billing_name }}
+                                                {% else %}
+                                                    Please enter billing name
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-phone"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.billing_phone %}
+                                                    <span class="text-dark">
+                                                        {{ profile.billing_phone }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter a phone number</span>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-location-dot"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.billing_address %}
+                                                    <span class="text-dark">{{ profile.billing_address }}</span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter a physical address</span>
+                                                {% endif %}
+                                                <br>
+                                                {% if profile.billing_code %}
+                                                    <span class="text-dark">{{ profile.billing_code }}</span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter postal code</span>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>                                    
+                                </a>
+                                <br>
+                                <!-- Billing Info Modal -->
+<div class="modal fade" id="billingModal" tabindex="-1" aria-labelledby="billingModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="billingModalLabel">Edit Billing Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="billingForm" method="post" action="{% url 'basket' %}">
+              {% csrf_token %}
+              <input type="hidden" name="form_type" value="billing">
+              {{ billing_form.as_p }}
+              <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+                            </div>
+                            
+                            <div class="col-6 my-4">
+
+                                <h6>Deliver to:</h6>
+                                <hr>
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#shippingModal">
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-user"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.shipping_name %}
+                                                    {{ profile.shipping_name }}
+                                                {% else %}
+                                                    Please enter shipping name
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-phone"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.shipping_phone %}
+                                                    <span class="text-dark">
+                                                        {{ profile.shipping_phone }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter a phone number</span>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <div class="row my-2">
+                                        <div class="col-1 text-center"><i class="fa-solid fa-location-dot"></i></div>
+                                        <div class="col-11">
+                                            <small>
+                                                {% if profile.shipping_address %}
+                                                    <span class="text-dark">{{ profile.shipping_address }}</span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter a physical address</span>
+                                                {% endif %}
+                                                <br>
+                                                {% if profile.shipping_code %}
+                                                    <span class="text-dark">{{ profile.shipping_code }}</span>
+                                                {% else %}
+                                                    <span class="text-danger">Please enter postal code</span>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- Shipping Info Modal -->
+<div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="shippingModalLabel">Edit Shipping Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="shippingForm" method="post" action="{% url 'basket' %}">
+              {% csrf_token %}
+              <input type="hidden" name="form_type" value="shipping">
+              {{ shipping_form.as_p }}
+              <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {% else %}
@@ -118,11 +268,29 @@ Meta Description
                             </table>
                         </div>
                         <hr>
-                        <button class="btn btn-primary w-100">PAY NOW</button>
-                        <form method="POST">
-                            {% csrf_token %}
-                            <button type="submit" name="action" value="create_order">Create Test Order</button>
-                        </form>
+                        <!-- PAY NOW Button -->
+{% if can_pay %}
+<form method="POST">
+    {% csrf_token %}
+    <button class="btn btn-success w-100" type="submit" name="action" value="create_order">PAY NOW</button>
+    <br>
+    <div class="text-center p-2">
+        <sup class="text-secondary">
+            Powered By
+            <img src="https://images.ctfassets.net/fzn2n1nzq965/6XFEUA9FzMBMphYdcUab19/37a1e07201366a351f7956560ccac09d/Stripe_wordmark_-_slate.svg" width="64px">
+        </sup>
+    </div>
+</form>
+{% else %}
+<button class="btn btn-warning w-100" type="button" disabled="disabled">PAY NOW</button>
+<br>
+<div class="text-center p-2">
+    <sup class="text-secondary">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Please update your Delivery Information
+    </sup>
+</div>
+{% endif %}
                     </div>
                 {% else %}
                 {% endif %}
@@ -132,5 +300,45 @@ Meta Description
     </div>
 
 </section>
-
 {% endblock %}
+
+
+{% block postloadjs %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const billingForm = document.getElementById('billingForm');
+    billingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(billingForm);
+        fetch("{% url 'update_billing' %}", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            var billingModal = new bootstrap.Modal(document.getElementById('billingModal'));
+            billingModal.hide();
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    const shippingForm = document.getElementById('shippingForm');
+    shippingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(shippingForm);
+        fetch("{% url 'update_shipping' %}", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            var shippingModal = new bootstrap.Modal(document.getElementById('shippingModal'));
+            shippingModal.hide();
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+{% endblock postloadjs %}

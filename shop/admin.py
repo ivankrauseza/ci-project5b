@@ -36,14 +36,21 @@ class TransactionAdmin(admin.ModelAdmin):
 
 class SalesOrderItemInline(admin.TabularInline):
     model = SalesOrderItem
-    readonly_fields = ('product', 'price')  # Make product and price read-only
-    extra = 0  # Set the number of extra inline forms to display (0 for none)
+    readonly_fields = ['sales_order', 'product', 'quantity', 'price']
+    can_delete = False
+    extra = 0  # Do not display any extra blank forms
 
 
 class SalesOrderAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'user', 'date', 'number', 'billing_name', 'billing_address', 'billing_phone',
+        'shipping_name', 'shipping_address', 'shipping_phone', 'items_total', 'delivery_amount',
+        'vat_amount', 'order_total'
+    ]
     inlines = [SalesOrderItemInline]
-    list_display = ('user', 'number', 'date', 'items_total', 'order_total')
-    readonly_fields = ('user', 'number', 'date')  # Make user, number, and date read-only
+    list_display = ['number', 'user', 'date', 'order_total']
+    search_fields = ['number', 'user__username']
+    list_filter = ['date']
 
 
 admin.site.register(SalesOrder, SalesOrderAdmin)

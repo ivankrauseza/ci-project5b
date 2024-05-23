@@ -22,6 +22,24 @@ Meta Description
 <p>Username: {{ user.username }}</p>
 <p>Email: {{ user.email }}</p>
 <!-- Add more user-specific information if needed -->
+<hr>
+<div class="mt-4">
+  <h4>Billing Information</h4>
+  <form method="post" action="{% url 'update_billing' %}">
+      {% csrf_token %}
+      {{ billing_form.as_p }}
+      <button type="submit" class="btn btn-primary">Update Billing Info</button>
+  </form>
+</div>
+
+<div class="mt-4">
+  <h4>Shipping Information</h4>
+  <form method="post" action="{% url 'update_shipping' %}">
+      {% csrf_token %}
+      {{ shipping_form.as_p }}
+      <button type="submit" class="btn btn-primary">Update Shipping Info</button>
+  </form>
+</div>
                 </article>
 
             </div>
@@ -32,3 +50,49 @@ Meta Description
 </section>
 
 {% endblock %}
+
+
+
+{% block postloadjs %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const billingForm = document.getElementById('billingForm');
+    billingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(billingForm);
+        fetch("{% url 'update_billing' %}", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Update the billing info on the page
+            // Close the modal
+            var billingModal = new bootstrap.Modal(document.getElementById('billingModal'));
+            billingModal.hide();
+            location.reload(); // Reload the page to reflect the changes
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    const shippingForm = document.getElementById('shippingForm');
+    shippingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(shippingForm);
+        fetch("{% url 'update_shipping' %}", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Update the shipping info on the page
+            // Close the modal
+            var shippingModal = new bootstrap.Modal(document.getElementById('shippingModal'));
+            shippingModal.hide();
+            location.reload(); // Reload the page to reflect the changes
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+{% endblock postloadjs %}

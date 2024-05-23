@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 import uuid
 from django.conf import settings
 from django.contrib import messages
-from .models import Product, Media, Transaction, Contact, Support, SalesOrder, SalesOrderItem
-from .forms import AddToBasketForm, BasketQuantityForm, ContactForm, SupportForm
+from .models import Product, Media, Transaction, Contact, Support, SalesOrder, SalesOrderItem, Profile
+from .forms import AddToBasketForm, BasketQuantityForm, ContactForm, SupportForm,  BillingForm, ShippingForm
 from django.db.models import Q
 from .logging_utils import log_transaction
 import re
@@ -271,60 +272,99 @@ def ProductDetail(request, sku):
 
 @login_required
 def Basket(request):
-    # Retrieve transactions for the current user
+    user = request.user
+    try:
+        profile = Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        profile = None
+
+    if user.is_authenticated and profile:
+        billing_fields = [
+            profile.billing_name,
+            profile.billing_address,
+            profile.billing_code,
+            profile.billing_phone,
+        ]
+        shipping_fields = [
+            profile.shipping_name,
+            profile.shipping_address,
+            profile.shipping_code,
+            profile.shipping_phone,
+        ]
+
+        all_billing_filled = all(billing_fields)
+        all_shipping_filled = all(shipping_fields)
+
+        can_pay = all_billing_filled and all_shipping_filled
+    else:
+        can_pay = False
+
     user_transactions = Transaction.objects.filter(user=request.user, type='B')
 
-    # Calculate and add subtotal for each transaction
     for transaction in user_transactions:
         transaction.subtotal = transaction.quantity * transaction.product.price
 
-    # Calculate total basket value
     total_basket_value = sum(transaction.subtotal for transaction in user_transactions)
-    delivery_amount = Decimal('10.00')  # Convert delivery amount to decimal (optional)
+    delivery_amount = Decimal('10.00')
     vat_rate = Decimal('0.23')
     vat_amount = total_basket_value * vat_rate
     total_amount = total_basket_value + delivery_amount + vat_amount
-    if request.method == "POST" and request.POST.get('action') == 'create_order':
-        # Create Sales Order
-        sales_order = SalesOrder.objects.create(
-            user=request.user,
-            number=f"SO{timezone.now().strftime('%Y%m%d%H%M%S')}",
-            billing_name="John Doe",
-            billing_address="123 Main St, Anytown, USA",
-            billing_phone="123-456-7890",
-            shipping_name="John Doe",
-            shipping_address="123 Main St, Anytown, USA",
-            shipping_phone="123-456-7890",
-            items_total=total_basket_value,
-            delivery_amount=delivery_amount,
-            vat_amount=vat_amount,
-            order_total=total_amount,
-        )
 
-        # Create Sales Order Items
-        for transaction in user_transactions:
-            SalesOrderItem.objects.create(
-                sales_order=sales_order,
-                product=transaction.product,
-                quantity=transaction.quantity,
-                price=transaction.product.price
+    if request.method == "POST":
+        if request.POST.get('action') == 'create_order':
+            sales_order = SalesOrder.objects.create(
+                user=user,
+                number=f"SO{timezone.now().strftime('%Y%m%d%H%M%S')}",
+                billing_name=profile.billing_name,
+                billing_address=profile.billing_address,
+                billing_phone=profile.billing_phone,
+                shipping_name=profile.shipping_name,
+                shipping_address=profile.shipping_address,
+                shipping_phone=profile.shipping_phone,
+                items_total=total_basket_value,
+                delivery_amount=delivery_amount,
+                vat_amount=vat_amount,
+                order_total=total_amount,
             )
-            # Adjust Product Quantity
-            transaction.product.stock -= transaction.quantity
-            transaction.product.save()
 
-        # Delete Transactions
-        user_transactions.delete()
+            for transaction in user_transactions:
+                SalesOrderItem.objects.create(
+                    sales_order=sales_order,
+                    product=transaction.product,
+                    quantity=transaction.quantity,
+                    price=transaction.product.price
+                )
+                transaction.product.stock -= transaction.quantity
+                transaction.product.save()
 
-        # Redirect to a confirmation page or back to the basket
-        return redirect('confirm', order_id=sales_order.id)
+            user_transactions.delete()
+            return redirect('confirm', order_id=sales_order.id)
+
+        elif request.POST.get('form_type') == 'billing':
+            billing_form = BillingForm(request.POST, instance=profile)
+            if billing_form.is_valid():
+                billing_form.save()
+                return redirect('basket')
+        elif request.POST.get('form_type') == 'shipping':
+            shipping_form = ShippingForm(request.POST, instance=profile)
+            if shipping_form.is_valid():
+                shipping_form.save()
+                return redirect('basket')
+
+    billing_form = BillingForm(instance=profile)
+    shipping_form = ShippingForm(instance=profile)
 
     context = {
+        'user': user,
+        'profile': profile,
         'user_transactions': user_transactions,
         'total_basket_value': total_basket_value,
         'delivery_amount': delivery_amount,
         'vat_amount': vat_amount,
         'total_amount': total_amount,
+        'billing_form': billing_form,
+        'shipping_form': shipping_form,
+        'can_pay': can_pay,
     }
     return render(request, 'basket.html', context)
 
@@ -361,9 +401,59 @@ def OrderConfirmation(request, order_id):
 @login_required
 def profile(request):
     user = request.user
-    # Add more context data if needed
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    billing_form = BillingForm(instance=profile)
+    shipping_form = ShippingForm(instance=profile)
+
     context = {
         'user': user,
+        'billing_form': billing_form,
+        'shipping_form': shipping_form,
+    }
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def update_billing(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        billing_form = BillingForm(request.POST, instance=profile)
+        if billing_form.is_valid():
+            billing_form.save()
+            return redirect('profile')
+
+    billing_form = BillingForm(instance=profile)
+    shipping_form = ShippingForm(instance=profile)
+
+    context = {
+        'user': user,
+        'billing_form': billing_form,
+        'shipping_form': shipping_form,
+    }
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def update_shipping(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        shipping_form = ShippingForm(request.POST, instance=profile)
+        if shipping_form.is_valid():
+            shipping_form.save()
+            return redirect('profile')
+
+    billing_form = BillingForm(instance=profile)
+    shipping_form = ShippingForm(instance=profile)
+
+    context = {
+        'user': user,
+        'billing_form': billing_form,
+        'shipping_form': shipping_form,
     }
     return render(request, 'profile.html', context)
 

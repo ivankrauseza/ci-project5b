@@ -1,5 +1,41 @@
 from django import forms
-from .models import Transaction, Contact, Support
+from .models import Transaction, Contact, Support, Profile
+
+
+class BillingForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['billing_name', 'billing_address', 'billing_code', 'billing_phone']
+        widgets = {
+            'billing_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'billing_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'billing_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'billing_phone': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'billing_name': 'Full Name',
+            'billing_address': 'Address',
+            'billing_code': 'Postal Code',
+            'billing_phone': 'Phone Number',
+        }
+
+
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['shipping_name', 'shipping_address', 'shipping_code', 'shipping_phone']
+        widgets = {
+            'shipping_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'shipping_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_phone': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'shipping_name': 'Full Name',
+            'shipping_address': 'Address',
+            'shipping_code': 'Postal Code',
+            'shipping_phone': 'Phone Number',
+        }
 
 
 class AddToBasketForm(forms.Form):

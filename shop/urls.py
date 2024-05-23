@@ -20,6 +20,8 @@ urlpatterns = [
     path('order-confirmation/<int:order_id>/', views.OrderConfirmation, name='confirm'),
     # PROFILE
     path('profile/', views.profile, name='profile'),
+    path('profile/update_billing/', views.update_billing, name='update_billing'),
+    path('profile/update_shipping/', views.update_shipping, name='update_shipping'),
     path('orders/', views.orders, name='orders'),
     # ADMIN
     path('dashboard/', views.Dashboard, name='Dashboard'),

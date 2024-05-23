@@ -14,9 +14,11 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     billing_name = models.CharField(max_length=255)
     billing_address = models.TextField()
+    billing_code = models.CharField(max_length=20, blank=True)
     billing_phone = models.CharField(max_length=20, blank=True)
     shipping_name = models.CharField(max_length=255, blank=True)
     shipping_address = models.TextField(blank=True)
+    shipping_code = models.CharField(max_length=20, blank=True)
     shipping_phone = models.CharField(max_length=20, blank=True)
 
 
@@ -154,9 +156,11 @@ class SalesOrder(models.Model):
     number = models.CharField(max_length=50, unique=True)  # Unique sales order number
     billing_name = models.CharField(max_length=255)
     billing_address = models.TextField()
+    billing_code = models.CharField(max_length=20, blank=True)  # Optional billing phone number
     billing_phone = models.CharField(max_length=20, blank=True)  # Optional billing phone number
     shipping_name = models.CharField(max_length=255, blank=True)  # Optional shipping name
     shipping_address = models.TextField(blank=True)  # Optional shipping address
+    shipping_code = models.CharField(max_length=20, blank=True)  # Optional shipping phone number
     shipping_phone = models.CharField(max_length=20, blank=True)  # Optional shipping phone number
     items_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     delivery_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))

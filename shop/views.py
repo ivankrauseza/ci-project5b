@@ -43,6 +43,26 @@ def About(request):
     return render(request, 'about.html')
 
 
+# EMAIL - Send Order Confirmation
+def send_order_email(sender_email, sender_password, to_email, subject, body, content_type='plain'):
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = to_email
+    message['Subject'] = subject
+    message.attach(MIMEText(body, content_type))
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, to_email, message.as_string())
+        server.close()
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+# EMAIL - Send Contact Form
 def send_email(subject, body, to_email):
     sender_email = os.environ.get('EMAIL_SEND')
     sender_password = os.environ.get('EMAIL_KEY')
@@ -64,6 +84,7 @@ def send_email(subject, body, to_email):
         print(f"Error: {e}")
 
 
+# EMAIL - Send Support Form
 def support_email(subject, body, to_email):
     sender_email = os.environ.get('EMAIL_SEND')
     sender_password = os.environ.get('EMAIL_KEY')
@@ -338,6 +359,65 @@ def Basket(request):
                 transaction.product.save()
 
             user_transactions.delete()
+
+            # Sending emails to customer and store owners
+            sender_email = os.environ.get('EMAIL_SEND')
+            sender_password = os.environ.get('EMAIL_KEY')
+
+            # Customer Email
+            customer_subject = 'Order Confirmation'
+            customer_body = f"""
+            <html>
+            <body>
+                <h2>Thank you for your order!</h2>
+                <p><strong>Order Number:</strong> {sales_order.number}</p>
+                <p><strong>Billing Name:</strong> {sales_order.billing_name}</p>
+                <p><strong>Billing Address:</strong> {sales_order.billing_address}</p>
+                <p><strong>Shipping Name:</strong> {sales_order.shipping_name}</p>
+                <p><strong>Shipping Address:</strong> {sales_order.shipping_address}</p>
+                <p><strong>Total Amount:</strong> €{sales_order.order_total}</p>
+                <p>We will notify you once your order is shipped.</p>
+            </body>
+            </html>
+            """
+
+            send_order_email(
+                sender_email,
+                sender_password,
+                user.email,
+                customer_subject,
+                customer_body,
+                'html'
+            )
+
+            # Webstore Team Email
+            store_team_email = 'ivankrause85@gmail.com'
+            store_subject = 'New Order Received'
+            store_body = f"""
+            <html>
+            <body>
+                <h2>New Order Received</h2>
+                <p><strong>Order Number:</strong> {sales_order.number}</p>
+                <p><strong>Customer:</strong> {user.get_full_name()}</p>
+                <p><strong>Billing Name:</strong> {sales_order.billing_name}</p>
+                <p><strong>Billing Address:</strong> {sales_order.billing_address}</p>
+                <p><strong>Shipping Name:</strong> {sales_order.shipping_name}</p>
+                <p><strong>Shipping Address:</strong> {sales_order.shipping_address}</p>
+                <p><strong>Total Amount:</strong> €{sales_order.order_total}</p>
+                <p>Please process the order promptly.</p>
+            </body>
+            </html>
+            """
+
+            send_order_email(
+                sender_email,
+                sender_password,
+                store_team_email,
+                store_subject,
+                store_body,
+                'html'
+            )
+
             return redirect('confirm', order_id=sales_order.id)
 
         elif request.POST.get('form_type') == 'billing':

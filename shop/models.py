@@ -212,6 +212,16 @@ class SalesOrder(models.Model):
     delivery_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     vat_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    status_choices = [
+        ('1', 'Preparing'),
+        ('2', 'Shipped'),
+        ('3', 'Complete'),
+    ]
+    status = models.CharField(
+        max_length=1,
+        choices=status_choices,
+        default='',
+    )
     paid = models.BooleanField(default=False)
 
     def __str__(self):

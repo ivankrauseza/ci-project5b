@@ -19,14 +19,28 @@ Meta Description
 
                 <article>
                     <h1>My Orders</h1>
-<ul>
-    {% for order in user_orders %}
-        <li>
-            <a href="{% url 'order_detail' order.number %}">Order #{{ order.number }}</a>
-            - Total: {{ order.order_total }}
-        </li>
-    {% endfor %}
-</ul>
+                        {% for order in user_orders %}
+                            <a class="btn bg-light w-100 text-start" href="{% url 'order_detail' order.number %}">
+                                <div class="row">
+                                    <div class="col-10 text-start">                                        
+                                        {{ order.number }}<br>
+                                        <sup>{{ order.date }}</sup>
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        {% if order.status == '1' %}
+                                            <span class="text-warning">Preparing</span>
+                                        {% elif order.status == '2' %}
+                                            <span class="text-success">Shipped</span>
+                                        {% elif order.status == '3' %}
+                                            <span class="text-success">Complete</span>
+                                        {% else %}
+                                            <span class="text-danger">Issue</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                            <hr>
+                        {% endfor %}
                 </article>
 
             </div>

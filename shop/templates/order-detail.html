@@ -18,10 +18,17 @@ Meta Description
         <div class="row my-5">
 
             <div class="col-12 col-lg-12 px-3">
+                <a class="btn w-100 text-secondary btn-sm py-3" href="{% url 'orders' %}">
+                    <i class="fa-solid fa-arrow-left-long"></i>
+                    Back to Orders
+                </a>
                 <article class="salesorder">
                 <div class="border rounded py-4 px-4">
                     <div class="row">
-                        <div class="col-12 px-4">
+                        <div class="col-12 px-4 text-end">
+                            CADENCE
+                        </div>
+                        <div class="col-12 px-4 py-3">
                             <h1>Sales Order</h1>
                         </div>
                         <div class="col-6 px-4">
@@ -53,7 +60,29 @@ Meta Description
                             </p>
                         </div>
                         <div class="col-12 px-4">
-                            <p><strong>Order Number:</strong> {{ sales_order.number }}</p>
+                            <p>
+                                <strong>Order Number:</strong> {{ sales_order.number }}
+                                <br>
+                                <strong>Date:</strong> {{ sales_order.date }}
+                                <br>
+                                <strong>Status:</strong> 
+                                {% if sales_order.status == '1' %}
+                                    <span class="text-warning">Preparing</span>
+                                {% elif sales_order.status == '2' %}
+                                    <span class="text-success">Shipped</span>
+                                {% elif sales_order.status == '3' %}
+                                    <span class="text-success">Complete</span>
+                                {% else %}
+                                    <span class="text-danger">Issue</span>
+                                {% endif %}
+                                <br>
+                                <strong>Payment:</strong> 
+                                {% if sales_order.paid %}
+                                    <span class="text-success">Paid</span>
+                                {% else %}
+                                    <span class="text-danger">Pending</span>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-12 px-3">
                             <table class="table">
@@ -89,8 +118,20 @@ Meta Description
                                 <strong>Total Amount:</strong> €{{ sales_order.order_total }}
                             </small>
                         </div>
+                        <div class="col-12 px-4 text-center">
+                            &nbsp;
+                        </div>
+                        <div class="col-12 px-4 text-center">
+                            <small class="text-secondary">
+                                Company information
+                            </small>
+                        </div>
                     </div>
                 </div>
+                <a class="btn w-100 text-secondary btn-sm py-3" href="{% url 'orders' %}">
+                    <i class="fa-solid fa-arrow-left-long"></i>
+                    Back to Orders
+                </a>
                 </article>
             </div>
         </div>

@@ -566,7 +566,7 @@ def update_shipping(request):
 
 @login_required
 def orders(request):
-    user_orders = SalesOrder.objects.filter(user=request.user)
+    user_orders = SalesOrder.objects.filter(user=request.user).order_by('-date')
     context = {
         'user_orders': user_orders,
     }
@@ -750,6 +750,7 @@ def stripe_webhook(request):
             delivery_amount=Decimal('10.00'),
             vat_amount=vat_amount_decimal,
             order_total=total_amount_decimal,
+            status='1',
             paid=True
         )
         order.save()

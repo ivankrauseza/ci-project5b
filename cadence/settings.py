@@ -24,8 +24,12 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'ivankrause-ci-project5b-e803e3155c26.herokuapp.com'
-    ]
+]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://js.stripe.com",
+    # Add any other allowed origins if needed
+]
 
 # Application definition
 AUTHENTICATION_BACKENDS = [
@@ -177,3 +181,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_SEND")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+# Stripe Payments
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_ENDPOINT_SECRET = os.environ.get('STRIPE_ENDPOINT_SECRET')

@@ -17,12 +17,19 @@ urlpatterns = [
     path('basket/', views.Basket, name='basket'),
     path('basket_quantity_update/<int:transaction_id>/', views.basket_quantity_update, name='basket_quantity_update'),
     path('delete-transaction/<int:transaction_id>/', views.delete_transaction, name='delete_transaction'),
-    path('order-confirmation/<int:order_id>/', views.OrderConfirmation, name='confirm'),
+    path('order-confirmation/<str:order_number>/', views.OrderConfirmation, name='confirm'),
     # PROFILE
     path('profile/', views.profile, name='profile'),
     path('profile/update_billing/', views.update_billing, name='update_billing'),
     path('profile/update_shipping/', views.update_shipping, name='update_shipping'),
     path('orders/', views.orders, name='orders'),
+    path('orders/<str:order_number>/', views.OrderDetail, name='order_detail'),
+    # Stripe
+    path('config/', views.stripe_config),
+    path('create-checkout-session/', views.create_checkout_session),
+    path('success/', views.SuccessView.as_view()),
+    path('cancelled/', views.CancelledView.as_view()),
+    path('webhook/', views.stripe_webhook),
     # ADMIN
     path('dashboard/', views.Dashboard, name='Dashboard'),
 ]

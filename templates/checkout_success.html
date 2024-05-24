@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Payment
+{% endblock %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="row py-5">
+      <div class="col-12 text-center">
+        <h1><strong>Thank You!</strong></h1>
+        <h5>
+          Your order was completed successfully
+        </h5>
+      </div>
+    </div>
+    <div class="row py-5">
+      <div class="col-12 text-center">
+        <p>You can view your <a href="{% url 'orders' %}">order history</a> at any time to check the status of your order.</p>
+      </div>
+    </div>
+  </div>  
+{% endblock %}

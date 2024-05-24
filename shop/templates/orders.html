@@ -22,7 +22,7 @@ Meta Description
 <ul>
     {% for order in user_orders %}
         <li>
-            <a href="{% url 'confirm' order.id %}">Order #{{ order.number }}</a>
+            <a href="{% url 'order_detail' order.number %}">Order #{{ order.number }}</a>
             - Total: {{ order.order_total }}
         </li>
     {% endfor %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Payment
+{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <p>Your payment was cancelled.</p>
+      <a href="{% url 'basket' %}">Back to checkout</a>
+    </div>
+  </section>
+  
+  {% endblock %}

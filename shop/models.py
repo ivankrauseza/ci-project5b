@@ -6,12 +6,17 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from allauth.account.signals import user_signed_up
 from django.db.models.signals import post_save
 from decimal import Decimal
+
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    stripe_id = models.CharField(max_length=50, blank=True, null=True)
     billing_name = models.CharField(max_length=255)
     billing_address = models.TextField()
     billing_code = models.CharField(max_length=20, blank=True)
@@ -22,11 +27,21 @@ class Profile(models.Model):
     shipping_phone = models.CharField(max_length=20, blank=True)
 
 
+@receiver(user_signed_up)
+def create_user_profile(sender, user, **kwargs):
+    customer = stripe.Customer.create(email=user.email)
+    Profile.objects.get_or_create(
+        user=user,
+        defaults={'stripe_id': customer.id}
+    )
+
+
 @receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
+def create_or_update_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-    instance.profile.save()
+    else:
+        instance.profile.save()
 
 
 # Error if value is less than 0 :

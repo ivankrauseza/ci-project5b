@@ -12,20 +12,13 @@ Meta Description
 
 <section>
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb my-3">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Order Confirmation</li>
-            </ol>
-        </nav>
 
         <div class="row my-5">
             <div class="col-12 col-lg-12 px-3">
-                <h1>Order Confirmation</h1>
-                <p>Thank you for your order! Here are your order details:</p>
+                <h5>ORDER No. {{ sales_order.number }}</h5>
             </div>
 
-            <div class="col-12 col-lg-8 px-3">
+            <div class="col-12 col-lg-12 px-3">
                 <div class="border rounded p-3">
                     <h5>Order Details</h5>
                     <p><strong>Order Number:</strong> {{ sales_order.number }}</p>

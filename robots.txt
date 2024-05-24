@@ -1,2 +1,8 @@
 User-agent: *
 Disallow: /admin/
+Disallow: /orders/
+Disallow: /order-confirmation/
+Disallow: /basket/
+Disallow: /profile/
+Disallow: /accounts/
+Disallow: /dashboard/

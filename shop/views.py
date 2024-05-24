@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
 import uuid
 from django.conf import settings
 from django.contrib import messages
@@ -15,6 +13,14 @@ import re
 from django.core import exceptions
 from decimal import Decimal
 from django.utils import timezone
+
+# Checkout + Stripe
+import stripe
+from django.conf import settings
+from django.http.response import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+stripe.api_key = settings.STRIPE_SECRET_KEY
+from django.views.generic.base import TemplateView
 
 # Email
 import os
@@ -418,7 +424,7 @@ def Basket(request):
                 'html'
             )
 
-            return redirect('confirm', order_id=sales_order.id)
+            return redirect('confirm', order_number=sales_order.number)
 
         elif request.POST.get('form_type') == 'billing':
             billing_form = BillingForm(request.POST, instance=profile)
@@ -473,9 +479,22 @@ def delete_transaction(request, transaction_id):
     return redirect('basket')
 
 
-def OrderConfirmation(request, order_id):
-    order = SalesOrder.objects.get(id=order_id, user=request.user)
-    return render(request, 'order-confirmation.html', {'order': order})
+@login_required
+def OrderConfirmation(request, order_number):
+    sales_order = get_object_or_404(SalesOrder, number=order_number)
+    context = {
+        'sales_order': sales_order,
+    }
+    return render(request, 'order-confirmation.html', context)
+
+
+@login_required
+def OrderDetail(request, order_number):
+    sales_order = get_object_or_404(SalesOrder, number=order_number)
+    context = {
+        'sales_order': sales_order,
+    }
+    return render(request, 'order-detail.html', context)
 
 
 @login_required
@@ -550,3 +569,158 @@ def orders(request):
 def Dashboard(request):
     # messages.info(request, 'Test Toast')
     return render(request, 'dashboard.html')
+
+
+# STRIPE CHECKOUT
+
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == 'GET':
+        domain_url = 'http://localhost:8000/'
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            # Create new Checkout Session for the order
+            # Other optional params include:
+            # [billing_address_collection] - to display billing address details on the page
+            # [customer] - if you have an existing Stripe Customer ID
+            # [payment_intent_data] - capture the payment later
+            # [customer_email] - prefill the email input in the form
+            # For full details see https://stripe.com/docs/api/checkout/sessions/create
+
+            # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+            checkout_session = stripe.checkout.Session.create(
+                success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=domain_url + 'cancelled/',
+                payment_method_types=['card'],
+                mode='payment',
+                line_items=[
+                    {
+                        'name': 'T-shirt',
+                        'quantity': 1,
+                        'currency': 'usd',
+                        'amount': '2000',
+                    }
+                ]
+            )
+            return JsonResponse({'sessionId': checkout_session['id']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+        
+
+@csrf_exempt
+def stripe_webhook(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        print(e)
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        print(e)
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        
+        # Get session objects :
+        session = event['data']['object']
+        session_id = session.get('id')
+        sid = session.get('customer')
+        customer_email = session.customer_details.get('email')
+        total_amount = session.get('amount_total') / 100
+        total_amount_decimal = Decimal(str(total_amount))
+        currency = session.get('currency')
+
+        last_order = Order.objects.order_by('-oid').first()
+
+        if last_order and last_order.oid.isdigit():
+            sequence = str(int(last_order.oid) + 1)
+        else:
+            # Use a more dynamic or configurable fallback value
+            sequence = '1000000000'
+
+        order_address_queryset = OrderDeliveryAddress.objects.filter(sid=sid)
+        if order_address_queryset.exists():
+            order_address = order_address_queryset.first()
+            combined_text = order_address.get_combined_address_text()
+        else:
+            # Handle the case when no matching object is found.
+            combined_text = "No matching order address found."
+
+        # Create a new Order in Django:
+        order = SalesOrder(
+            oid=sequence,  # Order ID
+            oda=combined_text,  # Address Snapshot
+            sid=sid,
+            session_id=session_id,
+            customer_email=customer_email,
+            total_amount=total_amount_decimal,
+            currency=currency,
+            status='Order Received',
+            paid='PAID'
+        )
+        order.save()
+
+        basket_items = Transaction.objects.filter(
+            sid=sid,
+            type="B"
+        )
+        for basket_item in basket_items:
+            basket_item.oid = sequence
+            basket_item.type = "S"
+            basket_item.save()
+        
+        # Then send confirmation email :
+        def send_order_confirmation_email(customer_email, oid):
+
+            sender_email = os.environ.get('EMAIL_SEND')
+            sender_password = os.environ.get('EMAIL_KEY')
+
+            subject = "Order Confirmation"
+            body = f"Dear Customer,\n\nYour order with ID {oid} has been successfully processed.\n\nBest Regards,\nYour Team"
+
+            message = MIMEMultipart()
+            message['From'] = sender_email
+            message['To'] = customer_email  # customer_email
+            message['Subject'] = subject
+            message.attach(MIMEText(body, 'plain'))
+
+            try:
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.starttls()
+                server.login(sender_email, sender_password)
+                server.sendmail(sender_email, customer_email, message.as_string())
+                server.close()
+                print("Email sent successfully!")
+            except Exception as e:
+                print(f"Error: {e}")
+
+        # Call the email function after saving the order
+        send_order_confirmation_email('ivan.krause@gmail.com', sequence)
+
+    return HttpResponse(status=200)
+
+
+class SuccessView(TemplateView):
+    template_name = 'checkout_success.html'
+
+
+class CancelledView(TemplateView):
+    template_name = 'checkout_cancelled.html'

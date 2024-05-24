@@ -1,17 +1,65 @@
 import os
-from django.utils import timezone
 import time
-from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.dispatch import receiver
-from allauth.account.signals import user_signed_up
-from django.db.models.signals import post_save
 from decimal import Decimal
+
+from allauth.account.signals import user_signed_up
+from django.contrib.auth.signals import user_logged_in
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.conf import settings
 
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+@receiver(user_signed_up)
+def create_user_profile(sender, user, **kwargs):
+    try:
+        customer = stripe.Customer.create(email=user.email)
+        Profile.objects.get_or_create(
+            user=user,
+            defaults={'stripe_id': customer.id}
+        )
+    except Exception as e:
+        # Log the error or print it to the console for debugging
+        print(f"Error creating Stripe customer: {e}")
+
+
+@receiver(post_save, sender=User)
+def create_or_update_profile(sender, instance, created, **kwargs):
+    if created:
+        try:
+            Profile.objects.create(user=instance)
+        except Exception as e:
+            # Log the error or print it to the console for debugging
+            print(f"Error creating profile: {e}")
+    else:
+        try:
+            instance.profile.save()
+        except Exception as e:
+            # Log the error or print it to the console for debugging
+            print(f"Error saving profile: {e}")
+
+
+@receiver(user_logged_in)
+def check_and_create_stripe_customer(sender, request, user, **kwargs):
+    try:
+        profile = user.profile
+        if not profile.stripe_id:
+            # Create a new Stripe Customer
+            customer = stripe.Customer.create(
+                email=user.email  # Assuming email is a unique identifier in Stripe
+            )
+            profile.stripe_id = customer.id
+            profile.save()
+        print("User logged in signal triggered")
+    except Profile.DoesNotExist as e:
+        # Handle the case where a profile doesn't exist
+        print(f"Error saving profile: {e}")
+        pass
 
 
 class Profile(models.Model):
@@ -25,23 +73,6 @@ class Profile(models.Model):
     shipping_address = models.TextField(blank=True)
     shipping_code = models.CharField(max_length=20, blank=True)
     shipping_phone = models.CharField(max_length=20, blank=True)
-
-
-@receiver(user_signed_up)
-def create_user_profile(sender, user, **kwargs):
-    customer = stripe.Customer.create(email=user.email)
-    Profile.objects.get_or_create(
-        user=user,
-        defaults={'stripe_id': customer.id}
-    )
-
-
-@receiver(post_save, sender=User)
-def create_or_update_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    else:
-        instance.profile.save()
 
 
 # Error if value is less than 0 :

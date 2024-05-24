@@ -4,6 +4,7 @@ from django.core.mail import send_mail, BadHeaderError
 import uuid
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
 from .models import Product, Media, Transaction, Contact, Support, SalesOrder, SalesOrderItem, Profile
 from .forms import AddToBasketForm, BasketQuantityForm, ContactForm, SupportForm,  BillingForm, ShippingForm
 from django.db.models import Q
@@ -639,66 +640,87 @@ def stripe_webhook(request):
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         
-        # Get session objects :
+        # Get session objects
         session = event['data']['object']
         session_id = session.get('id')
-        sid = session.get('customer')
-        customer_email = session.customer_details.get('email')
+        customer_email = session['customer_details']['email']
         total_amount = session.get('amount_total') / 100
         total_amount_decimal = Decimal(str(total_amount))
         currency = session.get('currency')
 
-        last_order = Order.objects.order_by('-oid').first()
+        # Get the user and profile objects associated with the session email
+        try:
+            user = User.objects.get(email=customer_email)
+            profile = Profile.objects.get(user=user)
+        except User.DoesNotExist:
+            print(f"No user found with email: {customer_email}")
+            return HttpResponse(status=400)
+        except Profile.DoesNotExist:
+            print(f"No profile found for user with email: {customer_email}")
+            return HttpResponse(status=400)
 
-        if last_order and last_order.oid.isdigit():
-            sequence = str(int(last_order.oid) + 1)
+        billing_name = profile.billing_name
+        billing_address = profile.billing_address
+        billing_code = profile.billing_code
+        billing_phone = profile.billing_phone
+
+        shipping_name = profile.shipping_name
+        shipping_address = profile.shipping_address
+        shipping_code = profile.shipping_code
+        shipping_phone = profile.shipping_phone
+
+        last_order = SalesOrder.objects.order_by('-number').first()
+
+        if last_order and last_order.number.isdigit():
+            sequence = str(int(last_order.number) + 1)
         else:
-            # Use a more dynamic or configurable fallback value
             sequence = '1000000000'
 
-        order_address_queryset = OrderDeliveryAddress.objects.filter(sid=sid)
-        if order_address_queryset.exists():
-            order_address = order_address_queryset.first()
-            combined_text = order_address.get_combined_address_text()
-        else:
-            # Handle the case when no matching object is found.
-            combined_text = "No matching order address found."
-
-        # Create a new Order in Django:
+        # Create a new SalesOrder in Django
         order = SalesOrder(
-            oid=sequence,  # Order ID
-            oda=combined_text,  # Address Snapshot
-            sid=sid,
-            session_id=session_id,
-            customer_email=customer_email,
-            total_amount=total_amount_decimal,
-            currency=currency,
-            status='Order Received',
-            paid='PAID'
+            user=user,
+            number=sequence,  # Order number
+            billing_name=billing_name,
+            billing_address=billing_address,
+            billing_code=billing_code,
+            billing_phone=billing_phone,
+            shipping_name=shipping_name,
+            shipping_address=shipping_address,
+            shipping_code=shipping_code,
+            shipping_phone=shipping_phone,
+            items_total=total_amount_decimal,
+            delivery_amount=Decimal('0.00'),  # Adjust this accordingly
+            vat_amount=Decimal('0.00'),  # Adjust this accordingly
+            order_total=total_amount_decimal
         )
         order.save()
 
         basket_items = Transaction.objects.filter(
-            sid=sid,
+            user=user,
             type="B"
         )
         for basket_item in basket_items:
-            basket_item.oid = sequence
-            basket_item.type = "S"
+            SalesOrderItem.objects.create(
+                sales_order=order,
+                product=basket_item.product,
+                quantity=basket_item.quantity,
+                price=basket_item.product.price  # Assuming product price is stored in Product model
+            )
+            # Remove the line below if `type` field is not needed in SalesOrderItem
+            # basket_item.type = "S"
             basket_item.save()
-        
-        # Then send confirmation email :
-        def send_order_confirmation_email(customer_email, oid):
 
+        # Send confirmation email
+        def send_order_confirmation_email(customer_email, order_number):
             sender_email = os.environ.get('EMAIL_SEND')
             sender_password = os.environ.get('EMAIL_KEY')
 
             subject = "Order Confirmation"
-            body = f"Dear Customer,\n\nYour order with ID {oid} has been successfully processed.\n\nBest Regards,\nYour Team"
+            body = f"Dear Customer,\n\nYour order with ID {order_number} has been successfully processed.\n\nBest Regards,\nYour Team"
 
             message = MIMEMultipart()
             message['From'] = sender_email
-            message['To'] = customer_email  # customer_email
+            message['To'] = customer_email
             message['Subject'] = subject
             message.attach(MIMEText(body, 'plain'))
 
@@ -713,7 +735,7 @@ def stripe_webhook(request):
                 print(f"Error: {e}")
 
         # Call the email function after saving the order
-        send_order_confirmation_email('ivan.krause@gmail.com', sequence)
+        send_order_confirmation_email(customer_email, sequence)
 
     return HttpResponse(status=200)
 

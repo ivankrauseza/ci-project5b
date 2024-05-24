@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Media, Transaction, SalesOrder, SalesOrderItem, Contact, Support
+from .models import Product, Media, Transaction, SalesOrder, SalesOrderItem, Contact, Support, Profile
 
 
 class MediaInline(admin.TabularInline):
@@ -70,3 +70,9 @@ class SupportAdmin(admin.ModelAdmin):
     list_display = ('reference_number', 'name')
     list_filter = ('name', 'email')
     search_fields = ('reference_number', 'email')
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'stripe_id', 'billing_name', 'shipping_name')
+    search_fields = ('user__username', 'billing_name', 'shipping_name')

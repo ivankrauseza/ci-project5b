@@ -81,20 +81,23 @@ Meta Description
                     {% endfor %}
                 </div>
 
-                <div class="my-5 border rounded p-3">
+                <div class="my-5 border rounded py-4 px-2">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                                <h5>Delivery Information</h5>
-                                <p>All information is required to place an order:</p>
+                                <h5>Information:</h5>
+                                <p>Please ensure that the information provided below is complete and accurate to ensure a smooth delivery process.</p>    
                             </div>
-                            <div class="col-6 my-4">
-                                <h6>Billing Information</h6>
-                                <hr>
-                                <a type="button" data-bs-toggle="modal" data-bs-target="#billingModal">
+                            <div class="col-6">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#billingModal" class="btn border w-100 bg-white">
+                                    <div class="row my-2">
+                                        <div class="col-12 text-start">
+                                            <h6>Billing to:</h6>
+                                        </div>
+                                    </div>
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-user"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.billing_name %}
                                                     {{ profile.billing_name }}
@@ -106,7 +109,7 @@ Meta Description
                                     </div>
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-phone"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.billing_phone %}
                                                     <span class="text-dark">
@@ -121,7 +124,7 @@ Meta Description
                                     
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-location-dot"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.billing_address %}
                                                     <span class="text-dark">{{ profile.billing_address }}</span>
@@ -137,7 +140,7 @@ Meta Description
                                             </small>
                                         </div>
                                     </div>                                    
-                                </a>
+                                </button>
                                 <br>
                                 <!-- Billing Info Modal -->
 <div class="modal fade" id="billingModal" tabindex="-1" aria-labelledby="billingModal" aria-hidden="true">
@@ -160,14 +163,16 @@ Meta Description
   </div>
                             </div>
                             
-                            <div class="col-6 my-4">
-
-                                <h6>Deliver to:</h6>
-                                <hr>
-                                <a type="button" data-bs-toggle="modal" data-bs-target="#shippingModal">
+                            <div class="col-6">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#shippingModal" class="btn border w-100 bg-white">
+                                    <div class="row my-2">
+                                        <div class="col-12 text-start">
+                                            <h6>Deliver to:</h6>
+                                        </div>
+                                    </div>
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-user"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.shipping_name %}
                                                     {{ profile.shipping_name }}
@@ -179,7 +184,7 @@ Meta Description
                                     </div>
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-phone"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.shipping_phone %}
                                                     <span class="text-dark">
@@ -194,7 +199,7 @@ Meta Description
 
                                     <div class="row my-2">
                                         <div class="col-1 text-center"><i class="fa-solid fa-location-dot"></i></div>
-                                        <div class="col-11">
+                                        <div class="col-11 text-start">
                                             <small>
                                                 {% if profile.shipping_address %}
                                                     <span class="text-dark">{{ profile.shipping_address }}</span>
@@ -210,7 +215,7 @@ Meta Description
                                             </small>
                                         </div>
                                     </div>
-                                </a>
+                                </button>
                                 <!-- Shipping Info Modal -->
 <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -237,7 +242,7 @@ Meta Description
                 </div>
 
                 {% else %}
-                    <p>Basket is empty. <a href="{% url 'products' %}">Browse Products</a></p>
+                    <p>No products added &gt; <a href="{% url 'products' %}"><strong>Start Shopping</strong></a></p>
                 {% endif %}
             </div>
 

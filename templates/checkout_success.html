@@ -5,19 +5,23 @@ Payment
 {% endblock %}
 
 {% block content %}
+<section>
   <div class="container my-5">
     <div class="row py-5">
-      <div class="col-12 text-center">
-        <h1><strong>Thank You!</strong></h1>
-        <h5>
-          Your order was completed successfully
-        </h5>
+      <div class="col-12 text-center py-5">
+        <article>
+          <div class="text-success" style="font-size: 100px;">
+            <i class="fa-regular fa-circle-check"></i>
+          </div>
+          <h1>Thank You!</h1>
+          <h5>
+            Your order has been successfully processed.
+          </h5>
+          <br>
+          <p><a class="btn btn-outline-success btn-sm" href="{% url 'orders' %}">VIEW MY ORDERS</a></p>
+        </article>
       </div>
     </div>
-    <div class="row py-5">
-      <div class="col-12 text-center">
-        <p>You can view your <a href="{% url 'orders' %}">order history</a> at any time to check the status of your order.</p>
-      </div>
-    </div>
-  </div>  
+  </div> 
+</section> 
 {% endblock %}

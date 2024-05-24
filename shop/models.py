@@ -212,6 +212,7 @@ class SalesOrder(models.Model):
     delivery_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     vat_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Sales Order: {self.number}"

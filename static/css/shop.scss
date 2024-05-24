@@ -189,3 +189,15 @@
         }
     }
 }
+
+// SALES ORDERS:
+article.salesorder {
+    width: 100%;
+    max-width: 640px;
+    h1, h2, h3, h4, h5, h6, p, th, td, small {
+        font-size: 14px!important;
+    }
+    h1 {
+        font-size: 20px!important;
+    }
+}

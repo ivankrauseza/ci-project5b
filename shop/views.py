@@ -335,8 +335,12 @@ def Basket(request):
     total_basket_value = sum(transaction.subtotal for transaction in user_transactions)
     delivery_amount = Decimal('10.00')
     vat_rate = Decimal('0.23')
-    vat_amount = total_basket_value * vat_rate
-    total_amount = total_basket_value + delivery_amount + vat_amount
+    cost_amount = total_basket_value + delivery_amount
+    print(cost_amount)
+    vat_amount = cost_amount * vat_rate
+    print(vat_amount)
+    total_amount = cost_amount + vat_amount
+    print(total_amount)
 
     if request.method == "POST":
         if request.POST.get('action') == 'create_order':
@@ -492,8 +496,10 @@ def OrderConfirmation(request, order_number):
 @login_required
 def OrderDetail(request, order_number):
     sales_order = get_object_or_404(SalesOrder, number=order_number)
+    sales_order_items = sales_order.items.all()
     context = {
         'sales_order': sales_order,
+        'sales_order_items': sales_order_items,
     }
     return render(request, 'order-detail.html', context)
 
@@ -584,37 +590,94 @@ def stripe_config(request):
 
 @csrf_exempt
 def create_checkout_session(request):
-    if request.method == 'GET':
-        domain_url = 'http://localhost:8000/'
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        try:
-            # Create new Checkout Session for the order
-            # Other optional params include:
-            # [billing_address_collection] - to display billing address details on the page
-            # [customer] - if you have an existing Stripe Customer ID
-            # [payment_intent_data] - capture the payment later
-            # [customer_email] - prefill the email input in the form
-            # For full details see https://stripe.com/docs/api/checkout/sessions/create
 
-            # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+    # Logged In - Get Stripe ID :
+    try:
+        customer = Profile.objects.get(user=request.user)
+        scid = customer.stripe_id
+
+    # Logged Out :
+    except Profile.DoesNotExist:
+        scid = None
+        # Guest checkout...
+
+    scheme = request.scheme
+    domain = request.get_host()
+
+    if request.method == 'GET':
+        domain_url = f'{scheme}://{domain}/'
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        try:
+            stripe_line_items = []
+            total_amount = 0
+            delivery_fee = 0
+            basket_items = Transaction.objects.filter(
+                user=request.user,
+                type="B"
+            )
+            if basket_items.exists():
+                for basket_item in basket_items:
+                    product_total = int(basket_item.product.price * 100) * basket_item.quantity
+                    total_amount += product_total
+                    # Check if any product is physical to apply delivery fee
+                    if basket_item.product.type == 'PHYSICAL':
+                        delivery_fee = 1000  # cents
+
+                    stripe_line_items.append({
+                        'price_data': {
+                            'currency': 'eur',
+                            'unit_amount': int(basket_item.product.price * 100),
+                            'product_data': {
+                                'name': basket_item.product.name,
+                            },
+                        },
+                        'quantity': basket_item.quantity,
+                    })
+
+            # Add delivery fee line item if applicable
+            if delivery_fee > 0:
+                stripe_line_items.append({
+                    'price_data': {
+                        'currency': 'eur',
+                        'unit_amount': delivery_fee,
+                        'product_data': {
+                            'name': 'Delivery Fee',
+                        },
+                    },
+                    'quantity': 1,
+                })
+                total_amount += delivery_fee
+
+            # Calculate VAT
+            vat_rate = 0.23
+            vat_amount = int(total_amount * vat_rate)
+
+            # Add VAT line item
+            stripe_line_items.append({
+                'price_data': {
+                    'currency': 'eur',
+                    'unit_amount': vat_amount,
+                    'product_data': {
+                        'name': 'VAT (23%)',
+                    },
+                },
+                'quantity': 1,
+            })
+
+            # Create new Checkout Session for the order
             checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+                customer=scid,
+                success_url=domain_url + 'success/?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=domain_url + 'cancelled/',
                 payment_method_types=['card'],
                 mode='payment',
-                line_items=[
-                    {
-                        'name': 'T-shirt',
-                        'quantity': 1,
-                        'currency': 'usd',
-                        'amount': '2000',
-                    }
-                ]
+                line_items=stripe_line_items
             )
             return JsonResponse({'sessionId': checkout_session['id']})
         except Exception as e:
             return JsonResponse({'error': str(e)})
-        
+
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -645,6 +708,8 @@ def stripe_webhook(request):
         session_id = session.get('id')
         customer_email = session['customer_details']['email']
         total_amount = session.get('amount_total') / 100
+        vat_amount = 0.23
+        vat_amount_decimal = Decimal(str(total_amount * vat_amount))
         total_amount_decimal = Decimal(str(total_amount))
         currency = session.get('currency')
 
@@ -658,28 +723,21 @@ def stripe_webhook(request):
         except Profile.DoesNotExist:
             print(f"No profile found for user with email: {customer_email}")
             return HttpResponse(status=400)
-
+        
+        # SALES ORDER DATA:
+        sequence = f"SO{timezone.now().strftime('%Y%m%d%H%M%S')}"
         billing_name = profile.billing_name
         billing_address = profile.billing_address
         billing_code = profile.billing_code
         billing_phone = profile.billing_phone
-
         shipping_name = profile.shipping_name
         shipping_address = profile.shipping_address
         shipping_code = profile.shipping_code
         shipping_phone = profile.shipping_phone
-
-        last_order = SalesOrder.objects.order_by('-number').first()
-
-        if last_order and last_order.number.isdigit():
-            sequence = str(int(last_order.number) + 1)
-        else:
-            sequence = '1000000000'
-
-        # Create a new SalesOrder in Django
+        
         order = SalesOrder(
             user=user,
-            number=sequence,  # Order number
+            number=sequence,
             billing_name=billing_name,
             billing_address=billing_address,
             billing_code=billing_code,
@@ -689,55 +747,52 @@ def stripe_webhook(request):
             shipping_code=shipping_code,
             shipping_phone=shipping_phone,
             items_total=total_amount_decimal,
-            delivery_amount=Decimal('0.00'),  # Adjust this accordingly
-            vat_amount=Decimal('0.00'),  # Adjust this accordingly
-            order_total=total_amount_decimal
+            delivery_amount=Decimal('10.00'),
+            vat_amount=vat_amount_decimal,
+            order_total=total_amount_decimal,
+            paid=True
         )
         order.save()
 
-        basket_items = Transaction.objects.filter(
-            user=user,
-            type="B"
-        )
-        for basket_item in basket_items:
+        # SALES ORDER ITEM DATA:
+        transactions = Transaction.objects.filter(user=user, type="B")
+        for transaction in transactions:
             SalesOrderItem.objects.create(
                 sales_order=order,
-                product=basket_item.product,
-                quantity=basket_item.quantity,
-                price=basket_item.product.price  # Assuming product price is stored in Product model
+                product=transaction.product,
+                quantity=transaction.quantity,
+                price=transaction.product.price
             )
-            # Remove the line below if `type` field is not needed in SalesOrderItem
-            # basket_item.type = "S"
-            basket_item.save()
+            transaction.product.stock -= transaction.quantity
+            transaction.product.save()
+        transactions.delete()
 
-        # Send confirmation email
-        def send_order_confirmation_email(customer_email, order_number):
-            sender_email = os.environ.get('EMAIL_SEND')
-            sender_password = os.environ.get('EMAIL_KEY')
-
-            subject = "Order Confirmation"
-            body = f"Dear Customer,\n\nYour order with ID {order_number} has been successfully processed.\n\nBest Regards,\nYour Team"
-
-            message = MIMEMultipart()
-            message['From'] = sender_email
-            message['To'] = customer_email
-            message['Subject'] = subject
-            message.attach(MIMEText(body, 'plain'))
-
-            try:
-                server = smtplib.SMTP('smtp.gmail.com', 587)
-                server.starttls()
-                server.login(sender_email, sender_password)
-                server.sendmail(sender_email, customer_email, message.as_string())
-                server.close()
-                print("Email sent successfully!")
-            except Exception as e:
-                print(f"Error: {e}")
-
-        # Call the email function after saving the order
         send_order_confirmation_email(customer_email, sequence)
 
     return HttpResponse(status=200)
+
+
+def send_order_confirmation_email(customer_email, order_number):
+    sender_email = os.environ.get('EMAIL_SEND')
+    sender_password = os.environ.get('EMAIL_KEY')
+    subject = "Order Confirmation"
+    body = f"Dear Customer,\n\nYour order with ID {order_number} has been successfully processed.\n\nBest Regards,\nYour Team"
+
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = customer_email
+    message['Subject'] = subject
+    message.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, customer_email, message.as_string())
+        server.close()
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 
 class SuccessView(TemplateView):

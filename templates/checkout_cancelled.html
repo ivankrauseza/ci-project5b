@@ -5,11 +5,26 @@ Payment
 {% endblock %}
 
 {% block content %}
-  <section class="section">
-    <div class="container">
-      <p>Your payment was cancelled.</p>
-      <a href="{% url 'basket' %}">Back to checkout</a>
+<section>
+  <div class="container my-5">
+    <div class="row py-5">
+      <div class="col-12 text-center py-5">
+        <article>
+          <div class="text-danger" style="font-size: 100px;">
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+          <h1>Payment Cancelled</h1>
+          <p>
+            Your payment has been successfully
+            cancelled. If you'd like to proceed with your purchase, you can simply revisit your shopping basket at any time. We're
+            here to assist you if you need any further assistance. Thank you for considering us!
+          </p>
+          <br>
+          <p><a class="btn btn-outline-primary btn-sm" href="{% url 'basket' %}">OPEN MY BASKET</a></p>
+          <br>
+        </article>
+      </div>
     </div>
-  </section>
-  
-  {% endblock %}
+  </div>
+</section>
+{% endblock %}

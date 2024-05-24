@@ -183,4 +183,15 @@
 }
 #basket .accordion h2 button:hover strong span {
   display: inline;
+}
+
+article.salesorder {
+  width: 100%;
+  max-width: 640px;
+}
+article.salesorder h1, article.salesorder h2, article.salesorder h3, article.salesorder h4, article.salesorder h5, article.salesorder h6, article.salesorder p, article.salesorder th, article.salesorder td, article.salesorder small {
+  font-size: 14px !important;
+}
+article.salesorder h1 {
+  font-size: 20px !important;
 }/*# sourceMappingURL=shop.css.map */

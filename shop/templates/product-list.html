@@ -16,23 +16,30 @@ Meta Description
 <section>
             
     <div class="container">
-    
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb my-3">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">All Products</li>
-            </ol>
-        </nav>
-
+        <div class="row">
+            <div class="col-12 p-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb my-3">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'products' %}">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {% if collection_name %}
+                                {{ collection_name }}
+                            {% endif %}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
     </div>
-    
-            
+       
     <div class="container">
         <div class="row my-5">
 
             <div class="col-12 col-lg-12">
-                <h1>All Products</h1>
+                {% if collection_name %}
+                    <h1>{{ collection_name }}</h1>
+                {% endif %}
             </div>
 
             <div class="col-12 col-lg-3">

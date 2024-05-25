@@ -10,6 +10,7 @@ from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.utils.text import slugify
 
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -96,6 +97,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     blocked = models.BooleanField(default=False)
+    
     collection_choices = [
         ('HANDTOOLS', 'Hand Tools'),
         ('POWERTOOLS', 'Power Tools'),
@@ -109,6 +111,7 @@ class Product(models.Model):
         choices=collection_choices,
         default='HANDTOOLS',
     )
+    
     type_choices = [
         ('PHYSICAL', 'Physical'),
         ('DIGITAL', 'Digital'),
@@ -120,6 +123,9 @@ class Product(models.Model):
         choices=type_choices,
         default='PHYSICAL',
     )
+
+    def get_collection_slug(self):
+        return slugify(dict(self.collection_choices).get(self.collection, ''))
 
     def clean(self):
         super().clean()

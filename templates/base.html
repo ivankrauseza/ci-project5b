@@ -81,13 +81,56 @@
                               <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                               </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'products' %}">All Products</a>
+                              </li>
                               <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Shop
+                                  Collections
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="{% url 'products' %}">All Products</a></li>
-                                  <li><a class="dropdown-item" href="{% url 'collection' %}">Collections</a></li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='hand-tools' %}">
+                                      Hand Tools
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='power-tools' %}">
+                                      Power Tools
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='testing-equipment' %}">
+                                      Testing Equipment
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='consumables' %}">
+                                      Consumables
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='storage' %}">
+                                      Storage
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a 
+                                    class="dropdown-item" 
+                                    href="{% url 'collection' collection_slug='wearables' %}">
+                                      Wearables
+                                    </a>
+                                  </li>
                                 </ul>
                               </li>
                               <li class="nav-item">

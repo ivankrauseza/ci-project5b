@@ -10,6 +10,9 @@ from .forms import AddToBasketForm, BasketQuantityForm, ContactForm, SupportForm
 from django.db.models import Q
 from .logging_utils import log_transaction
 import re
+# Products
+from django.utils.text import slugify
+
 # Basket
 from django.core import exceptions
 from decimal import Decimal
@@ -41,17 +44,22 @@ def custom_sort_key(media):
 
 
 def Home(request):
-    messages.info(request, 'Test Toast')
     return render(request, 'index.html')
 
 
 def About(request):
-    # messages.info(request, 'Test Toast')
     return render(request, 'about.html')
 
 
 # EMAIL - Send Order Confirmation
-def send_order_email(sender_email, sender_password, to_email, subject, body, content_type='plain'):
+def send_order_email(
+        sender_email,
+        sender_password,
+        to_email,
+        subject,
+        body,
+        content_type='plain'
+        ):
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = to_email
@@ -193,40 +201,48 @@ def SupportPage(request):
     return render(request, 'support.html', {'form': form})
 
 
-def ProductSearch(request):
+def ProductList(request, collection_slug=None):
     query = request.GET.get('q', '')
-    results = []
     if query:
-        results = Product.objects.filter(
+        # If a search query is provided, filter products based on the query
+        products = Product.objects.filter(
             Q(name__icontains=query) |
             Q(sku__icontains=query) |
             Q(blurb__icontains=query) |
             Q(desc__icontains=query) |
             Q(brand__icontains=query)
         )
-    return render(
-        request,
-        'product-list-search.html',
-        {'results': results, 'query': query}
-    )
+        collection_name = 'Search Results'
+        brand_filter = []  # Initialize brand_filter as an empty list for consistency
+        order_by = None  # Initialize order_by as None for consistency
+    else:
+        # Initialize brand_filter and order_by here to ensure they're always defined
+        brand_filter = request.GET.getlist('brand')
+        order_by = request.GET.get('order_by')
 
+        # Proceed with regular product listing logic
+        if collection_slug:
+            collection_map = {slugify(label): key for key, label in Product.collection_choices}
+            collection_key = collection_map.get(collection_slug, None)
+            if collection_key:
+                products = Product.objects.filter(collection=collection_key)
+                collection_name = dict(Product.collection_choices).get(collection_key)
+            else:
+                products = Product.objects.none()
+                collection_name = None  # If the slug does not match, set collection name to None
+        else:
+            products = Product.objects.all()
+            collection_name = "All Products"
 
-def ProductList(request):
-    products = Product.objects.all()
+        # Apply filters to the queryset if any filter is provided
+        if brand_filter:
+            products = products.filter(brand__in=brand_filter)
 
-    # Get filter parameters from request
-    brand_filter = request.GET.getlist('brand')
-    order_by = request.GET.get('order_by')
-
-    # Apply filters to the queryset if any filter is provided
-    if brand_filter:
-        products = products.filter(brand__in=brand_filter)
-
-    # Apply sorting to the queryset if order_by is provided
-    if order_by == 'asc':
-        products = products.order_by('price')
-    elif order_by == 'desc':
-        products = products.order_by('-price')
+        # Apply sorting to the queryset if order_by is provided
+        if order_by == 'asc':
+            products = products.order_by('price')
+        elif order_by == 'desc':
+            products = products.order_by('-price')
 
     # Get distinct brands for the filters
     brands = Product.objects.values_list('brand', flat=True).distinct()
@@ -243,17 +259,14 @@ def ProductList(request):
 
     return render(request, 'product-list.html', {
         'products': products,
+        'collection_name': collection_name,
         'brands': brands,
         'selected_brands': brand_filter,
         'product_images': product_images,  # Pass the image URLs dictionary to the template
         'MEDIA_URL': settings.MEDIA_URL,
-        'order_by': order_by
+        'order_by': order_by,
+        'query': query,  # Pass the search query to the template
     })
-
-
-def ProductCategories(request):
-    # messages.info(request, 'Test Toast')
-    return render(request, 'product-list-categories.html')
 
 
 def ProductDetail(request, sku):

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12 py-3">
+                <a href="{% url 'erp_products' %}"><i class="fa-solid fa-angle-left"></i> ERP Products</a>
+                <h1>{{ form.instance.pk|yesno:"Edit Product,Create Product" }}</h1>
+            </div>
+            <div class="col-12 col-md-6 p-3 p-lg-5">
+                <h5>Enter Product Data</h5>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">{{ form.instance.pk|yesno:"Update,Create" }}</button>
+                </form>
+            </div>
+            <div class="col-12 col-md-6 p-3 p-lg-5"></div>
+        </div>
+
+    </div>
+
+</section>
+                    
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

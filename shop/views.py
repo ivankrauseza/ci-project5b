@@ -250,12 +250,13 @@ def ProductList(request, collection_slug=None):
     # Create a dictionary to hold the image URLs
     product_images = {}
     for product in products:
-        # Query the media file associated with the product ID and SKU
-        matching_media = Media.objects.filter(product=product.id, file=f'uploads/{product.sku}.png').first()
-        if matching_media:
-            product_images[product.id] = matching_media.file.url
+        # Query all media files associated with the product
+        media_files = Media.objects.filter(product=product.id)
+        if media_files.exists():
+            # Get the URL of the first media file (you can adjust this logic as needed)
+            product_images[product.id] = media_files.first().file.url
         else:
-            product_images[product.id] = None  # Set to None if no matching media found
+            product_images[product.id] = None
 
     return render(request, 'product-list.html', {
         'products': products,
@@ -736,7 +737,7 @@ def stripe_webhook(request):
         except Profile.DoesNotExist:
             print(f"No profile found for user with email: {customer_email}")
             return HttpResponse(status=400)
-        
+
         # SALES ORDER DATA:
         sequence = f"SO{timezone.now().strftime('%Y%m%d%H%M%S')}"
         billing_name = profile.billing_name
@@ -747,7 +748,7 @@ def stripe_webhook(request):
         shipping_address = profile.shipping_address
         shipping_code = profile.shipping_code
         shipping_phone = profile.shipping_phone
-        
+
         order = SalesOrder(
             user=user,
             number=sequence,

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12 py-3">
+
+                    <a href="{% url 'erp' %}"><i class="fa-solid fa-angle-left"></i> ERP Home</a>
+                    <h1>All Orders</h1>
+                    <hr>
+                    {% for order in orders %}
+                        <a class="btn bg-light w-100 text-start" href="{% url 'erp_order_detail' order.number %}">
+                            <div class="row">
+                                <div class="col-10 text-start">                                        
+                                    {{ order.number }}<br>
+                                    <sup>{{ order.date }}</sup>
+                                </div>
+                                <div class="col-2 text-end">
+                                    {{order.status}}
+                                    {% if order.status == '1' %}
+                                        <span class="text-warning">Preparing</span>
+                                    {% elif order.status == '2' %}
+                                        <span class="text-success">Shipped</span>
+                                    {% elif order.status == '3' %}
+                                        <span class="text-success">Complete</span>
+                                    {% else %}
+                                        <span class="text-danger">Issue</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        <hr>
+                    {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

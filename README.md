@@ -12,6 +12,8 @@ https://fonts.google.com/specimen/Lato
 WARNINGS: account.EmailAddress: (models.W036) MySQL does not support unique constraints with conditions.
 ## Product Filtering and Sorting
 Problem to filter by both brand and sort by price
+## WARNINGS:
+?: (templates.E003) 'custom_filters' is used for multiple template tag modules: 'erp.templatetags.custom_filters', 'shop.templatetags.custom_filters'
 
 # Media
 Determine what systems to use to manage media files.

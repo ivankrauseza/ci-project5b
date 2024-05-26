@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12 py-3">
+
+                <article>
+                    <a href="{% url 'erp_products' %}"><i class="fa-solid fa-angle-left"></i> ERP Products</a>
+                    <h1>Delete Product?</h1>
+
+                    <p>Are you sure you want to delete <strong>{{ product.name }}</strong>?</p>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <a href="{% url 'erp_products' %}" class="btn btn-light">Cancel</a>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </article>
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+                    
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

@@ -11,6 +11,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.utils.text import slugify
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -141,35 +144,52 @@ class Product(models.Model):
         ordering = ['name']
 
 
-class Transaction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    date_added = models.DateTimeField(auto_now_add=True)
-    tranaction_choices = [
-        ('B', 'Basket'),
-        ('F', 'Favourite'),
-        ('Q', 'Quote'),
-        ('R', 'Return'),
-        ('S', 'Sale'),
-    ]
-    type = models.CharField(
-        max_length=1,
-        choices=tranaction_choices,
-        default='',
-    )
-
-    def __str__(self):
-        return f"{self.user.username} - {self.product.name} - {self.quantity}"
-
-
 class Media(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='media')
-    file = models.FileField(upload_to='uploads/', null=True)
+    file = models.ImageField(upload_to='uploads/', null=True)
+    thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
     version = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        if self.file:
+            # Open the image
+            img = Image.open(self.file)
+
+            # Resize the image if it exceeds 1024px x 1024px
+            max_size = (1024, 1024)
+            if img.width > max_size[0] or img.height > max_size[1]:
+                img.thumbnail(max_size, Image.BICUBIC)
+
+                # Center the image on a 1024px x 1024px canvas
+                new_img = Image.new("RGB", max_size, (255, 255, 255))  # White background
+                position = ((max_size[0] - img.width) // 2, (max_size[1] - img.height) // 2)
+                new_img.paste(img, position)
+
+                # Save the resized image to a BytesIO buffer
+                img_io = BytesIO()
+                img.save(img_io, format='JPEG')
+
+                # Save the resized image
+                img_io = BytesIO()
+                new_img.save(img_io, format='JPEG')
+                self.file.save(
+                    os.path.splitext(self.file.name)[0] + ".jpg",
+                    ContentFile(img_io.getvalue()),
+                    save=False
+                )
+
+                # Create thumbnail version
+                thumbnail_size = (256, 256)
+                img.thumbnail(thumbnail_size, Image.BICUBIC)  # Resize with anti-aliasing for thumbnail
+                thumbnail_io = BytesIO()
+                img.save(thumbnail_io, format='JPEG')
+                self.thumbnail.save(
+                    os.path.splitext(self.file.name)[0] + ".jpg",
+                    ContentFile(thumbnail_io.getvalue()),
+                    save=False
+                )
+
         # Check if a file with the same name exists
         existing_media = Media.objects.filter(
             product=self.product,
@@ -200,6 +220,28 @@ class Media(models.Model):
             existing_media.file.delete(save=False)
 
         super().save(*args, **kwargs)
+
+
+class Transaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    tranaction_choices = [
+        ('B', 'Basket'),
+        ('F', 'Favourite'),
+        ('Q', 'Quote'),
+        ('R', 'Return'),
+        ('S', 'Sale'),
+    ]
+    type = models.CharField(
+        max_length=1,
+        choices=tranaction_choices,
+        default='',
+    )
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name} - {self.quantity}"
 
 
 class SalesOrder(models.Model):

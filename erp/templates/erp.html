@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+<section>
+
+    <div class="container">
+
+        <div class="row my-5">
+            <div class="col-12 py-3">
+                    <p>Welcome, staff member!</p>
+
+                    <a href="{% url 'erp_products' %}">ERP Products</a>
+                    <a href="{% url 'erp_orders' %}">ERP Orders</a>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

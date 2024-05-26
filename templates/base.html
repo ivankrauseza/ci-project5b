@@ -24,9 +24,27 @@
     <!--Custom JS-->
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
+    <!--Admin CSS-->
+    {% if user.is_authenticated and user.is_staff %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+    {% endif %}
 
 </head>
 <body>
+  
+
+  {% if user.is_authenticated and user.is_staff %}
+  <div class="container-fluid adminbar">
+    <div class="row">
+      <div class="col-12 col-md-6 text-start px-3 py-2 my-auto text-white">
+        <a href="{% url 'erp' %}"><i class="fa-solid fa-gear"></i></a>
+      </div>
+      <div class="col-12 col-md-6 text-end px-3 py-2 my-auto text-white">
+        Welcome, staff member!
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
   <div class="container toolbox">
     <div class="row py-3">

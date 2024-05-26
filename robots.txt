@@ -6,3 +6,4 @@ Disallow: /basket/
 Disallow: /profile/
 Disallow: /accounts/
 Disallow: /dashboard/
+Disallow: /erp/

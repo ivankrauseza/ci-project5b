@@ -1,4 +1,40 @@
 @charset "UTF-8";
+.handtools {
+  background: url("/static/img/collection_handtools.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.powertools {
+  background: url("/static/img/collection_powertools.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.testingequipment {
+  background: url("/static/img/collection_testingequipment.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.consumables {
+  background: url("/static/img/collection_consumables.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.storage {
+  background: url("/static/img/collection_storage.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.wearables {
+  background: url("/static/img/collection_wearables.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
 .basket_item {
   position: relative;
 }

@@ -11,7 +11,7 @@ class MediaInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
-    list_display = ('name', 'sku', 'price', 'stock', 'brand', 'collection', 'type', 'created', 'updated', 'blocked')
+    list_display = ('name', 'sku', 'price', 'stock', 'brand', 'collection', 'blocked')
     list_filter = ('brand', 'collection', 'type', 'created', 'updated', 'blocked')
     search_fields = ['name', 'sku', 'brand']
     readonly_fields = ('created', 'updated')

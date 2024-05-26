@@ -30,3 +30,4 @@ Determine what systems to use to manage media files.
 - [robots.txt](https://learndjango.com/tutorials/add-robotstxt-django-website#:~:text=To%20implement%20a%20robots.,a%20new%20app%20called%20pages%20.&text=Immediately%20add%20it%20to%20your%20INSTALLED_APPS%20setting.&text=Then%20create%20a%20custom%20view,on%20the%20built%2Din%20TemplateView%20.)
 - [404 and 500 error pages](https://learndjango.com/tutorials/customizing-django-404-and-500-error-pages)
 - [Sitemap Generator](https://www.xml-sitemaps.com/)
+- [About Us Stock Image](https://www.freepik.com/free-photo/brutal-tattooed-bearded-mechanic-specialist-repairs-car-engine-which-is-raised-hydraulic-lift-garage-service-station_28232164.htm#fromView=search&page=1&position=11&uuid=06f52f37-3676-447d-b125-76469a656364)

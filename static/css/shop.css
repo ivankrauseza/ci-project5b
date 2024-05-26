@@ -35,6 +35,32 @@
   background-size: cover;
 }
 
+.feature {
+  background: url("/static/img/collection_wearables.jpg") no-repeat center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.handtools,
+.powertools,
+.testingequipment,
+.consumables,
+.storage,
+.wearables,
+.feature {
+  transform: scale(1);
+  transition: all 0.2s ease-in-out;
+}
+.handtools:hover,
+.powertools:hover,
+.testingequipment:hover,
+.consumables:hover,
+.storage:hover,
+.wearables:hover,
+.feature:hover {
+  transform: scale(1.1);
+}
+
 .basket_item {
   position: relative;
 }

@@ -31,39 +31,39 @@ Meta Description
             <div class="col-12 py-3 text-center">
                 <h3>Shop by Collection</h3>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='hand-tools' %}" class="btn w-100 p-5 handtools">
-                    <h4 class="text-white">HAND TOOLS</h4>
+            <div class="col-12 col-md-2 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='hand-tools' %}" class="btn w-100 px-2 py-4 handtools">
+                    <h4 class="text-white">HAND<br>TOOLS</h4>
                     <div class="btn btn-primary btn-sm text-white">Browse collection</div>
                 </a>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='power-tools' %}" class="btn w-100 p-5 powertools">
-                    <h4>POWER TOOLS</h4>
+            <div class="col-12 col-md-2 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='power-tools' %}" class="btn w-100 px-2 py-4 powertools">
+                    <h4>POWER<br>TOOLS</h4>
                     <div class="btn btn-warning btn-sm">Browse collection</div>
                 </a>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='testing-equipment' %}" class="btn w-100 p-5 testingequipment">
-                    <h4 class="text-white">TESTING EQUIPMENT</h4>
+            <div class="col-12 col-md-2 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='testing-equipment' %}" class="btn w-100 px-2 py-4 testingequipment">
+                    <h4 class="text-white">TESTING<br>EQUIPMENT</h4>
                     <div class="btn btn-success btn-sm text-white">Browse collection</div>
                 </a>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='consumables' %}" class="btn w-100 p-5 consumables">
-                    <h4 class="text-white">CONSUMABLES</h4>
+            <div class="col-12 col-md-2 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='consumables' %}" class="btn w-100 px-2 py-4 consumables">
+                    <h4 class="text-white">ALL<br>CONSUMABLES</h4>
                     <div class="btn btn-info btn-sm text-white">Browse collection</div>
                 </a>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='storage' %}" class="btn w-100 p-5 storage">
-                    <h4 class="text-white">STORAGE</h4>
+            <div class="col-12 col-md-4 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='storage' %}" class="btn w-100 px-2 py-4 storage">
+                    <h4 class="text-white">TOOL<br>STORAGE</h4>
                     <div class="btn btn-danger btn-sm">Browse collection</div>
                 </a>
             </div>
-            <div class="col-12 col-md-4 col-lg-6 text-center my-auto p-1">
-                <a href="{% url 'collection' collection_slug='wearables' %}" class="btn w-100 p-5 wearables">
-                    <h4 class="text-white">WEARABLES</h4>
+            <div class="col-12 col-md-4 col-lg-2 text-center my-auto p-1">
+                <a href="{% url 'collection' collection_slug='wearables' %}" class="btn w-100 px-2 py-4 wearables">
+                    <h4 class="text-white">ALL<br>WEARABLES</h4>
                     <div class="btn btn-secondary btn-sm">Browse collection</div>
                 </a>
             </div>
@@ -71,12 +71,22 @@ Meta Description
     </div>
       
     <div class="container">
-        <div class="row my-5">
-            <div class="col-12 text-center my-auto p-1">
-                <a href="#" class="btn bg-dark text-white w-100 p-5">
-                    <h4>FEATURE</h4>
-                    <div class="btn btn-primary btn-sm">Browse collection</div>
-                </a>
+        <div class="row my-5 bg-light">
+            <div class="col-12 col-md-6 text-start my-auto p-3 p-lg-5">
+                <img src="/static/img/brutal-tattooed-bearded-mechanic-specialist-repairs-car-engine-which-is-raised-hydraulic-lift-garage-service-station.jpg" alt="Mechanic">
+                <a href="https://www.freepik.com/free-photo/brutal-tattooed-bearded-mechanic-specialist-repairs-car-engine-which-is-raised-hydraulic-lift-garage-service-station_28232164.htm#fromView=search&page=1&position=11&uuid=06f52f37-3676-447d-b125-76469a656364" target="_blank">Image by fxquadro on Freepik</a>
+            </div>
+            <div class="col-12 col-md-6 text-start my-auto p-3 p-lg-5">
+                <h2>ABOUT US</h2>
+                <h5>
+                    At CADENCE Tools, we love working on everything, we love moving forward, and a workshop is our kingdom.
+                </h5>
+                <p>
+                    This passion has driven us to source and supply tools, equipment and safety gear that we are proud to
+                    use ourselves and encourage like minded individuals like yourself to be passionate about working with 
+                    your hands and to once again embrace the DIY way of life!
+                </p>
+                <a href="{% url 'about' %}" class="btn btn-primary btn-sm">Find out more</a>
             </div>
         </div>
     </div>

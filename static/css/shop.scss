@@ -29,6 +29,25 @@
     background-attachment:scroll;
     background-size: cover;
 }
+.feature {
+    background: url("/static/img/collection_wearables.jpg") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+
+.handtools,
+.powertools,
+.testingequipment,
+.consumables,
+.storage,
+.wearables,
+.feature {
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
 
 
 

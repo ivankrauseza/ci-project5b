@@ -23,7 +23,7 @@ Meta Description
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb my-3">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'products' %}">Shop</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
             </ol>
         </nav>
@@ -48,14 +48,18 @@ Meta Description
                 <div class="detail">
                     <small>{{ product.sku }}</small>
                     <h1>{{ product.name }}</h1>
-                    <h4 class="price my-3">&euro; {{ product.price }}</h4>
-                    <p>{{ product.blurb }}</p>
+                    {% if product.blocked %}
+                        <p><em>This product is no longer available for purchase.</em></p>
+                    {% else %}
+                        <h4 class="price my-3">&euro; {{ product.price }}</h4>
+                        <p>{{ product.blurb }}</p>
+                    {% endif %}
                     
                     <div class="my-5">
                         <small>
                             {% if product.blocked %}
                                 <div class="status">
-                                    <span>Status: <strong class="text-red">Unvailable</strong></span>
+                                    <span>Status: <strong class="text-danger">Unvailable</strong></span>
                                 </div>
                             {% else %}
                                 {% if user.is_authenticated %}
@@ -65,7 +69,7 @@ Meta Description
                                         <form method="post" class="form-inline">
                                             {% csrf_token %}
                                             {{ form }}
-                                            <button type="submit" class="btn btn-cart">ADD TO CART <i class="fa-solid fa-circle-plus"></i></button>
+                                            <button type="submit" class="btn btn-cart">Add To Basket <i class="fa-solid fa-circle-plus"></i></button>
                                         </form>
                                     {% endif %}
                                 {% else %}

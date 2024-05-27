@@ -30,14 +30,16 @@
     {% endif %}
 
 </head>
-<body>
+<body class="bg-dark">
   
 
   {% if user.is_authenticated and user.is_staff %}
   <div class="container-fluid adminbar">
     <div class="row">
       <div class="col-12 col-md-6 text-start px-3 py-2 my-auto text-white">
-        <a href="{% url 'erp' %}"><i class="fa-solid fa-gear"></i></a>
+        <a href="{% url 'erp' %}" class="text-white">
+          <i class="fa-solid fa-gear"></i> Admin Portal
+        </a>
       </div>
       <div class="col-12 col-md-6 text-end px-3 py-2 my-auto text-white">
         Welcome, staff member!
@@ -57,10 +59,10 @@
       <div class="col-6 text-end my-auto">
           <div>
             <a href="{% url 'basket' %}" class="btn">
-              <div class=" basket_item">
+              <div class="basket_item">
                 <i class="fa-solid fa-basket-shopping"></i>
                 {% if basket_item_count > 0 %}
-                  <span class="basket_count">
+                  <span class="basket_count bg-success">
                       {{ basket_item_count }}
                   </span>
                 {% endif %}
@@ -92,7 +94,7 @@
                     <nav class="navbar navbar-expand-lg py-3">
                         <div class="container-fluid">
                           <a class="navbar-brand" href="{% url 'home' %}">
-                            <strong>CADENCE</strong>
+                            <img src="{% static 'img/logo.png' %}" alt="" width="128px">
                           </a>
                           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -178,20 +180,20 @@
         </div>
     </header>
 
-    <main>
+    <main class="bg-white">
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
+    <footer class="bg-dark text-white">
 
         <div class="container">
             <div class="row py-3">
-              <div class="col-12 col-md-6 text-start my-auto">
-                <small>
-                  <img src="{% static 'img/ireland.svg' %}" height="16px"> &copy; Cadence Tools 2024
-                </small>
+              <div class="col-12 col-md-3 text-center text-md-start my-auto py-2 py-md-1">
+                <strong>
+                  &copy; Cadence Tools 2024
+                </strong>
               </div>
-              <div class="col-12 col-md-6 text-end my-auto">
+              <div class="col-12 col-md-9 text-center text-md-end my-auto py-2 py-md-1">
                   <small>
                     <a href="{% url 'home' %}">Home</a>
                     <span class="px-1 text-secondary">|</span>
@@ -207,15 +209,6 @@
                   </small>
               </div>
             </div>
-        </div>
-
-        <div class="container">
-          <div class="row my-5">
-            <div class="col-12 text-center">
-              <small>transactions processed by:</small><br>
-              <img src="https://images.ctfassets.net/fzn2n1nzq965/6XFEUA9FzMBMphYdcUab19/37a1e07201366a351f7956560ccac09d/Stripe_wordmark_-_slate.svg" width="64px">
-            </div>
-          </div>
         </div>
     </footer>
 

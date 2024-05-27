@@ -14,11 +14,13 @@
 
         <div class="row my-5">
             <div class="col-12 py-3">
-                    <p>Welcome, staff member!</p>
-
-                    <a href="{% url 'erp_products' %}">ERP Products</a>
-                    <a href="{% url 'erp_orders' %}">ERP Orders</a>
-
+                <h1>Admin Portal</h1>
+            </div>
+            <div class="col-12 col-md-6 py-3">
+                <a class="btn btn-primary w-100 p-3" href="{% url 'erp_products' %}">Manage Products</a>
+            </div>
+            <div class="col-12 col-md-6 py-3">
+                <a class="btn btn-success w-100 p-3" href="{% url 'erp_orders' %}">Manage Orders</a>
             </div>
         </div>
 

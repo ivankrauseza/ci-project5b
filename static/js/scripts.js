@@ -23,3 +23,25 @@ fetch("/config/")
     });
   });
 });
+
+$(document).ready(function(){
+  var adminBar = $(".adminbar");
+  var adminBarHeight = adminBar.outerHeight();
+  var scrollThreshold = 100; // Pixels from top to start animation
+  
+  // Function to handle scrolling
+  $(window).scroll(function() {
+      var scroll = $(this).scrollTop();
+      
+      // If scrolled down past the threshold, slide the admin bar into position
+      if (scroll > scrollThreshold) {
+        // Initially hide the admin bar
+          adminBar.css({top: -adminBarHeight, position: 'fixed', width: '100%', zIndex: 9999});
+          adminBar.stop().animate({top: 0}, 300);
+      } else {
+          // If not, hide the admin bar
+          adminBar.css({top: -0, position: 'relative', width: '100%', zIndex: 9999});
+          adminBar.stop().animate({top: -0}, 300);
+      }
+  });
+});

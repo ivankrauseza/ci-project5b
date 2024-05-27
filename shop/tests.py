@@ -1,9 +1,15 @@
 from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth.models import User
+from shop.models import Animal
 
 
-class HomePageTest(TestCase):
-    def test_home_page_status_code(self):
-        response = self.client.get(reverse('home'))  # Assuming 'home' is the name of your homepage URL
-        self.assertEqual(response.status_code, 200)
+class AnimalTestCase(TestCase):
+    def setUp(self):
+        Animal.objects.create(name="lion", sound="roar")
+        Animal.objects.create(name="cat", sound="meow")
+
+    def test_animals_can_speak(self):
+        """Animals that can speak are correctly identified"""
+        lion = Animal.objects.get(name="lion")
+        cat = Animal.objects.get(name="cat")
+        self.assertEqual(lion.speak(), 'The lion says "roar"')
+        self.assertEqual(cat.speak(), 'The cat says "meow"')

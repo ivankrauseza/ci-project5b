@@ -18,6 +18,13 @@ img {
 
 .toolbox {
     position: relative;
+    color: #fff;
+    a, button {
+        color: #fff;
+        &:hover {
+            color: #f6a21e!important;
+        }
+    }
     .support {
         i {
             padding-right: 4px;
@@ -28,9 +35,8 @@ img {
 header {
     float: left;
     width: 100%;
-    background-color: #fff;
+    background-color: #f6a21e;
     z-index: 3;
-    border-bottom: solid 1px #eee;
 }
 
 main {
@@ -43,9 +49,14 @@ main {
 footer {
     float: left;
     width: 100%;
-    border-top: solid 1px #eee;
-    background-color: #fff;
+    background-color: #333;
     z-index: 1;
+    a {
+        color: #fff;
+        &:hover {
+            color: #f6a21e;
+        }
+    }
     .container {
         font-weight: 500;
     }
@@ -79,6 +90,11 @@ p {
 ul, ol {
     margin: 0 0 16px 16px;
     padding: 0 0 0 0;
+    &.no_bullet {
+        margin: 0 0 16px 0;
+        padding: 0 0 0 0;
+        list-style: none;
+    }
 }
 li {
     max-width: 75ch;
@@ -103,6 +119,7 @@ img {
 
 
 // BOOTSTRAP ADJUSTMENTS
+
 .container {
     width: 100%;
     max-width: 1680px;

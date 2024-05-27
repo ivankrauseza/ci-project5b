@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Product, Media, Transaction, Contact, Support, SalesOrder, SalesOrderItem, Profile
 from .forms import AddToBasketForm, BasketQuantityForm, ContactForm, SupportForm,  BillingForm, ShippingForm
-from django.db.models import Q
+from django.db.models import Count, Q
 from .logging_utils import log_transaction
 import re
 # Products
@@ -244,8 +244,8 @@ def ProductList(request, collection_slug=None):
         elif order_by == 'desc':
             products = products.order_by('-price')
 
-    # Get distinct brands for the filters
-    brands = Product.objects.values_list('brand', flat=True).distinct()
+    # Get brand counts
+    brands_with_counts = products.values('brand').annotate(count=Count('brand')).order_by('brand')
 
     # Create a dictionary to hold the image URLs
     product_images = {}
@@ -261,7 +261,7 @@ def ProductList(request, collection_slug=None):
     return render(request, 'product-list.html', {
         'products': products,
         'collection_name': collection_name,
-        'brands': brands,
+        'brands_with_counts': brands_with_counts,
         'selected_brands': brand_filter,
         'product_images': product_images,  # Pass the image URLs dictionary to the template
         'MEDIA_URL': settings.MEDIA_URL,

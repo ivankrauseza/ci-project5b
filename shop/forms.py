@@ -78,10 +78,33 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'email', 'message']
+        labels = {
+            'name': 'Your Name',
+            'email': 'Email Address',
+            'message': 'Message',
+        }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Full Name or Singular name accepted...',
+                    'class': 'form-control',
+                    'rows': 5
+                    }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'placeholder': 'Please enter a valid email address...',
+                    'class': 'form-control',
+                    'rows': 5
+                    }
+            ),
+            'message': forms.Textarea(
+                attrs={
+                    'placeholder': 'Your message here...',
+                    'class': 'form-control',
+                    'rows': 5
+                    }
+            ),
         }
 
 

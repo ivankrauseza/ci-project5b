@@ -43,41 +43,41 @@ Meta Description
             </div>
 
             <div class="col-12 col-lg-3">
-                <h5 class="mb-4">Filters:</h5>
-                <form method="GET">
-                    <div class="my-3">
-                        <h6>Brand</h6>
-                        {% for brand in brands %}
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="brand" value="{{ brand }}" id="brand_{{ brand }}" {% if brand in selected_brands %}checked{% endif %}>
-                            <label class="form-check-label" for="brand_{{ brand }}">
-                                {{ brand }}
-                            </label>
+                <div>
+                    <h5 class="mb-4">Filters:</h5>
+                    <form id="filter-form" method="GET">
+                        <div class="my-3">
+                            <h6>Sort by Price</h6>
+                            <select class="form-select" name="order_by">
+                                <option value="">Select</option>
+                                <option value="asc" {% if order_by == 'asc' %}selected{% endif %}>Lowest first</option>
+                                <option value="desc" {% if order_by == 'desc' %}selected{% endif %}>Highest first</option>
+                            </select>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
-                </form>
-                
+                        <div class="my-3">
+                            <h6>Brand</h6>
+                            {% for brand in brands_with_counts %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brand" value="{{ brand.brand }}" id="brand_{{ brand.brand }}" {% if brand.brand in selected_brands %}checked{% endif %}>
+                                <label class="form-check-label" for="brand_{{ brand.brand }}">
+                                    {{ brand.brand }} ({{ brand.count }})
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="col-12 col-lg-9">
                 <div class="container-fluid">
                     <div class="row">
                         {% if products %}
-                            <div class="col-12 text-end mb-4">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Sort
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="?{% if brand_filter %}{% for brand in selected_brands %}brand={{ brand }}&{% endfor %}{% endif %}order_by=asc"><i class="fa-solid fa-euro-sign"></i> Lowest first</a></li>
-                                        <li><a class="dropdown-item" href="?{% if brand_filter %}{% for brand in selected_brands %}brand={{ brand }}&{% endfor %}{% endif %}order_by=desc"><i class="fa-solid fa-euro-sign"></i> Highest first</a></li>
-                                    </ul>
-                                </div>
+                            <div class="col-12 text-start mb-4">
+                                <p>{{ products|length }} product/s found</p>
                             </div>
                             {% for product in products %}
-                                <div class="col-12 col-md-4 col-lg-3">
+                                <div class="col-12 col-md-4 col-lg-3 col-xl-2">
                                     <a href="{% url 'product_detail' sku=product.sku %}">
                                         <div class="card">
                                             {% if product_images|get_item:product.id %}
@@ -88,9 +88,17 @@ Meta Description
                                             <div class="card-body">
                                                 <h6 class="card-title">{{ product.name }}</h6>
                                                 <sup class="sku">SKU: {{ product.sku }}</sup>
-                                                <p class="card-text text-danger">
+                                                {% if product.blocked %}
+                                                    <div class="text-danger">
+                                                        <small>
+                                                            <em>Unavailable</em>
+                                                        </small>
+                                                    </div>
+                                                {% else %}
+                                                <p class="card-text price">
                                                     <strong>&euro; {{ product.price }}</strong>
                                                 </p>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </a>
@@ -109,3 +117,17 @@ Meta Description
 </section>
 
 {% endblock %}
+
+{% block postloadjs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterForm = document.getElementById('filter-form');
+        
+        filterForm.querySelectorAll('input[type="checkbox"], select[name="order_by"]').forEach(element => {
+            element.addEventListener('change', function () {
+                filterForm.submit();
+            });
+        });
+    });
+</script>
+{% endblock postloadjs %}

@@ -55,7 +55,6 @@
 .basket_item {
     position: relative;
     .basket_count {
-        background-color: #FC5C42;
         color: #fff;
         position: absolute;
         top: -8px;
@@ -136,7 +135,7 @@
 
 
 .price {
-    color: #FC5C42!important;
+    color: #7a871e!important;
 }
 
 .card {
@@ -144,9 +143,22 @@
     border-radius: 0;
     img.card-img-top {
         border-radius: 0;
+        transform: scale(0.9);
+        transition: all .2s ease-in-out;
+    }
+    .card-title {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     sup.sku {
         color: #999;
+    }
+    &:hover {
+        img.card-img-top {
+            transform: scale(1);
+        }
     }
 }
 
@@ -172,8 +184,8 @@
     .quantity {
         float: left;
         width: fit-content;
-        line-height: 32px;
-        height: 32px;
+        line-height: 48px;
+        height: 48px;
         padding: 0 1em;
         border:none;
         background-color: #eeeeee;
@@ -181,19 +193,21 @@
     .btn-cart {
         float: left;
         width: fit-content;
-        line-height: 32px;
-        height: 32px;
+        line-height: 48px;
+        height: 48px;
         padding: 0 1em;
         border:none;
         border-radius: 0;
-        background-color: #FC5C42;
+        background-color: #7a871e;
         color: #fff;
         font-size: 0.9em;
+        font-weight: 600;
+        letter-spacing: 1px;
         i {
             margin-left: 8px;
         }
         &:hover {
-            background-color: #FC4629;
+            background-color: #104210;
         }
     }
     .status {
@@ -239,6 +253,15 @@
                         }
                     }
                 }
+            }
+        }
+    }
+    .overview {
+        .btn-pay {
+            background-color: #7a871e;
+            color: #fff;
+            &:hover {
+                background-color: #104210;
             }
         }
     }

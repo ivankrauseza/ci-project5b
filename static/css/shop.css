@@ -65,7 +65,6 @@
   position: relative;
 }
 .basket_item .basket_count {
-  background-color: #FC5C42;
   color: #fff;
   position: absolute;
   top: -8px;
@@ -148,7 +147,7 @@
 }
 
 .price {
-  color: #FC5C42 !important;
+  color: #7a871e !important;
 }
 
 .card {
@@ -157,9 +156,20 @@
 }
 .card img.card-img-top {
   border-radius: 0;
+  transform: scale(0.9);
+  transition: all 0.2s ease-in-out;
+}
+.card .card-title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .card sup.sku {
   color: #999;
+}
+.card:hover img.card-img-top {
+  transform: scale(1);
 }
 
 .detail small {
@@ -184,8 +194,8 @@
   float: left;
   width: -moz-fit-content;
   width: fit-content;
-  line-height: 32px;
-  height: 32px;
+  line-height: 48px;
+  height: 48px;
   padding: 0 1em;
   border: none;
   background-color: #eeeeee;
@@ -194,20 +204,22 @@
   float: left;
   width: -moz-fit-content;
   width: fit-content;
-  line-height: 32px;
-  height: 32px;
+  line-height: 48px;
+  height: 48px;
   padding: 0 1em;
   border: none;
   border-radius: 0;
-  background-color: #FC5C42;
+  background-color: #7a871e;
   color: #fff;
   font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 .detail .btn-cart i {
   margin-left: 8px;
 }
 .detail .btn-cart:hover {
-  background-color: #FC4629;
+  background-color: #104210;
 }
 .detail .status {
   line-height: 48px;
@@ -245,6 +257,13 @@
 }
 #basket .accordion h2 button:hover strong span {
   display: inline;
+}
+#basket .overview .btn-pay {
+  background-color: #7a871e;
+  color: #fff;
+}
+#basket .overview .btn-pay:hover {
+  background-color: #104210;
 }
 
 article.salesorder {

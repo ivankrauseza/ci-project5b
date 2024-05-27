@@ -100,7 +100,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     blocked = models.BooleanField(default=False)
-    
+
     collection_choices = [
         ('HANDTOOLS', 'Hand Tools'),
         ('POWERTOOLS', 'Power Tools'),
@@ -126,6 +126,15 @@ class Product(models.Model):
         choices=type_choices,
         default='PHYSICAL',
     )
+
+    def delete(self, *args, **kwargs):
+        # Check for related SalesOrderItem instances
+        if self.salesorderitem_set.exists():
+            # Mark as blocked instead of deleting
+            self.blocked = True
+            self.save()
+        else:
+            super().delete(*args, **kwargs)
 
     def get_collection_slug(self):
         return slugify(dict(self.collection_choices).get(self.collection, ''))

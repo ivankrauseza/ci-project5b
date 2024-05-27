@@ -16,18 +16,35 @@
             <div class="col-12 py-3">
 
                     <a href="{% url 'erp' %}"><i class="fa-solid fa-angle-left"></i> ERP Home</a>
-                    <h1>All Products</h1>
 
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12"></div>
+                    <div class="row">
+                        <div class="col-6 text-start my-auto">
+                            <h1>All Products</h1>
+                        </div>
+                        <div class="col-6 text-end my-auto">
+                            <a class="btn btn-success btn-sm" href="{% url 'erp_product_create' %}">
+                                Add Product
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
                         </div>
                     </div>
 
-                    <a href="{% url 'erp_product_create' %}">Add Product</a>
+                    <hr>
 
                     <div class="container">
         {% for product in products %}
+        
+        {% if product.blocked %}
+        <div class="row">
+            <div class="col-12 text-start p-0">
+                <div class="btn btn-light w-100 text-start text-secondary">
+                    <sub>SKU: {{ product.sku }}</sub><br>
+                    <small>{{ product.name }} (Archived)</small><br>
+                    <sup>This item is blocked and cannot be removed as it is linked to a single or several SalesOrders.</sup>
+                </div>
+            </div>
+        </div>
+        {% else %}
         <div class="row">
             <div class="col-11 text-start p-0">
                 <h6>
@@ -40,6 +57,7 @@
                 </a>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </ul>

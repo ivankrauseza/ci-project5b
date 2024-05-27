@@ -56,11 +56,17 @@ Meta Description
                                     </p>
                                     <form method="POST" action="{% url 'basket_quantity_update' transaction.id %}">
                                         {% csrf_token %}
-                                        <div class="form-group">
-                                          <label for="quantity">Quantity:</label>
-                                          <input type="number" min="1" class="form-control" id="quantity" name="quantity" value="{{ transaction.quantity }}">
+                                        <div class="row">
+                                            <div class="col-3 d-flex align-items-end">
+                                                <div class="form-group">
+                                                  <label for="quantity">Quantity:</label>
+                                                  <input type="number" min="1" class="form-control" id="quantity" name="quantity" value="{{ transaction.quantity }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 d-flex align-items-end">
+                                                <button type="submit" class="btn btn-primary">Update Quantity</button>
+                                            </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Update Quantity</button>
                                       </form>
                                 </div>
                                 <div class="col-12 text-end">
@@ -248,7 +254,7 @@ Meta Description
 
             <div class="col-12 col-lg-3 px-3">
                 {% if user_transactions %}
-                    <div class="p-3 border rounded text-start">
+                    <div class="p-3 border rounded text-start overview">
                         <div class="p-2">
                             <h6>ORDER OVERVIEW:</h6>
                             <table class="w-100">
@@ -275,21 +281,16 @@ Meta Description
                         <hr>
                         <!-- PAY NOW Button -->
                         
-                        <button id="submitBtn" class="btn btn-success btn-block w-100">
-                            PLACE ORDER
-                        </button>
 {% if can_pay %}
-<form method="POST">
-    {% csrf_token %}
-    <button class="btn btn-success w-100" type="submit" name="action" value="create_order">PAY NOW</button>
-    <br>
-    <div class="text-center p-2">
-        <sup class="text-secondary">
-            Powered By
-            <img src="https://images.ctfassets.net/fzn2n1nzq965/6XFEUA9FzMBMphYdcUab19/37a1e07201366a351f7956560ccac09d/Stripe_wordmark_-_slate.svg" width="64px">
-        </sup>
-    </div>
-</form>
+<button id="submitBtn" class="btn btn-pay btn-block w-100">
+    PAY NOW
+</button>
+<div class="text-center p-2">
+    <sup class="text-secondary">
+        Powered By
+        <img src="https://images.ctfassets.net/fzn2n1nzq965/6XFEUA9FzMBMphYdcUab19/37a1e07201366a351f7956560ccac09d/Stripe_wordmark_-_slate.svg" width="64px">
+    </sup>
+</div>
 {% else %}
 <button class="btn btn-warning w-100" type="button" disabled="disabled">PAY NOW</button>
 <br>

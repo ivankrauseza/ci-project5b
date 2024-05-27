@@ -14,8 +14,12 @@ def erp(request):
 
 @login_required
 def erp_products(request):
-    products = Product.objects.all()
-    return render(request, 'erp-products.html', {'products': products})
+    products = Product.objects.all().order_by('blocked', 'name')
+    # Context for template:
+    context = {
+        'products': products
+    }
+    return render(request, 'erp-products.html', context)
 
 
 def product_create(request):
@@ -24,11 +28,14 @@ def product_create(request):
         if form.is_valid():
             product = form.save()
             messages.success(request, 'Product created successfully.')
-            # Redirect to the edit view with the pk of the created product
             return redirect('erp_product_edit', pk=product.pk)
     else:
         form = ProductForm()
-    return render(request, 'erp-product-create.html', {'form': form})
+    # Context for template:
+    context = {
+        'form': form
+    }
+    return render(request, 'erp-product-create.html', context)
 
 
 class product_edit(View):
@@ -46,17 +53,24 @@ class product_edit(View):
         if 'product_submit' in request.POST:
             if product_form.is_valid():
                 product = product_form.save()
+                messages.success(request, 'Product Data updated')
                 return redirect('erp_products')
-            
+
         # Handling media form submission
         elif 'media_submit' in request.POST:
             if media_form.is_valid():
                 media = media_form.save(commit=False)
                 media.product = product
                 media.save()
-                return redirect('erp_product_edit', pk=product.pk)  # Change this to your actual product list view name
-        return render(request, 'erp-product-edit.html', {'product_form': product_form, 'media_form': media_form})
-    
+                messages.success(request, 'Image Uploaded')
+                return redirect('erp_product_edit', pk=product.pk)
+        # Context for template:
+        context = {
+            'product_form': product_form,
+            'media_form': media_form
+        }
+        return render(request, 'erp-product-edit.html', context)
+
 
 class product_media_delete(View):
     def post(self, request, pk):
@@ -65,13 +79,18 @@ class product_media_delete(View):
         media.delete()
         return redirect('erp_product_edit', pk=product.pk)
 
+
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         product.delete()
         messages.success(request, 'Product deleted successfully.')
         return redirect('erp_products')
-    return render(request, 'erp-product-delete.html', {'product': product})
+    # Context for template:
+    context = {
+        'product': product
+    }
+    return render(request, 'erp-product-delete.html', context)
 
 
 @login_required
@@ -93,6 +112,7 @@ def erp_order_detail(request, order_number):
     else:
         form = SalesOrderStatusForm(instance=sales_order)
 
+    # Context for template:
     context = {
         'sales_order': sales_order,
         'sales_order_items': sales_order_items,

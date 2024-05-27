@@ -6,6 +6,20 @@ https://docs.google.com/document/d/1eg-6-Jtp0bN4qRNNa1RbKmSLPGvnc9nIOPRu5pCAiF4/
 # Identity Toolkit
 ## Google Font - Lato
 https://fonts.google.com/specimen/Lato
+## Colors
+- [Color Scheme](https://www.canva.com/colors/color-palettes/colored-coolers/)
+
+
+# Tests
+## use sqlite for testing database:
+```
+if 'test' in os.environ.get('DJANGO_SETTINGS_MODULE', ''):
+    # Use SQLite for tests
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+```
 
 # Bugs
 ## AllAuth - python manage.py runserver
@@ -33,3 +47,8 @@ Determine what systems to use to manage media files.
 - [404 and 500 error pages](https://learndjango.com/tutorials/customizing-django-404-and-500-error-pages)
 - [Sitemap Generator](https://www.xml-sitemaps.com/)
 - [About Us Stock Image](https://www.freepik.com/free-photo/brutal-tattooed-bearded-mechanic-specialist-repairs-car-engine-which-is-raised-hydraulic-lift-garage-service-station_28232164.htm#fromView=search&page=1&position=11&uuid=06f52f37-3676-447d-b125-76469a656364)
+
+## Product Images
+- [TE0123456789](https://www.jumia.com.ng/generic-mini-digital-multimeter-voltmeter-voltage-ampere-tester-160778516.html)
+- [3456789012](https://naughtonfarmmachinery.ie/products/swampmaster-stormgear-waterproof-jacket)
+- [0123456789](https://www.thegreekfoundation.com/shop/home/espresso-cup)

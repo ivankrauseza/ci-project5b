@@ -20,7 +20,7 @@ Meta Description
 
         <div class="row my-5">
         
-            <div class="col-12 col-md-6 py-3">
+            <div class="col-12 col-md-6 py-3 my-auto">
 
                 <article>
                     <h1>Customer Support</h1>
@@ -43,8 +43,9 @@ Meta Description
                 </article>
 
             </div>
-            <div class="col-12 col-md-6 py-3">
-                    <h5>Submit a support ticket:</h5>
+            <div class="col-12 col-md-6 py-3 my-auto">
+                <div class="bg-warning p-3 p-lg-5 rounded">
+                    <h2>Submit a support ticket:</h2>
                     <p>
                         All support request are required to be made in writing so that the ticket progress can be tracked.
                         When you submit your request, you will receive a confirmation email with a reference number.
@@ -52,8 +53,9 @@ Meta Description
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit">Submit Support</button>
+                        <button type="submit" class="btn btn-dark">Submit Request</button>
                     </form>
+                </div>
 
             </div>
         </div>

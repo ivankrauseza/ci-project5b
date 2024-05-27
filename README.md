@@ -29,6 +29,19 @@ Problem to filter by both brand and sort by price
 ## WARNINGS:
 ?: (templates.E003) 'custom_filters' is used for multiple template tag modules: 'erp.templatetags.custom_filters', 'shop.templatetags.custom_filters'
 
+
+# Deployment
+### Deployment to Heroku
+- Create Procfile (web: gunicorn cadence.wsgi)
+- Freeze requirements (pip freeze > requirements.txt)
+- Create New Project
+- Region: Europe 
+- Setup Config Vars
+- Deployment Method: GitHub > 'ci-project5b'
+- Choose a branch to deploy 'main'
+- Deploy Manually
+
+
 # Media
 Determine what systems to use to manage media files.
 

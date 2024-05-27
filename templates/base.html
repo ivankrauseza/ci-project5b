@@ -28,6 +28,43 @@
     {% if user.is_authenticated and user.is_staff %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
     {% endif %}
+    <style>
+      .handtools {
+    background: url("{% static 'img/collection_handtools.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.powertools {
+    background: url("{% static 'img/collection_powertools.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.testingequipment {
+    background: url("{% static 'img/collection_testingequipment.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.consumables {
+    background: url("{% static 'img/collection_consumables.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.storage {
+    background: url("{% static 'img/collection_storage.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.wearables {
+    background: url("{% static 'img/collection_wearables.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+.feature {
+    background: url("{% static 'img/collection_wearables.jpg' %}") no-repeat center center;
+    background-attachment:scroll;
+    background-size: cover;
+}
+    </style>
 
 </head>
 <body class="bg-dark">
@@ -36,13 +73,13 @@
   {% if user.is_authenticated and user.is_staff %}
   <div class="container-fluid adminbar">
     <div class="row">
-      <div class="col-12 col-md-6 text-start px-3 py-2 my-auto text-white">
+      <div class="col-6 text-start px-3 py-2 my-auto text-white">
         <a href="{% url 'erp' %}" class="text-white">
           <i class="fa-solid fa-gear"></i> Admin Portal
         </a>
       </div>
-      <div class="col-12 col-md-6 text-end px-3 py-2 my-auto text-white">
-        Welcome, staff member!
+      <div class="col-6 text-end px-3 py-2 my-auto text-white">
+        Staff Account
       </div>
     </div>
   </div>

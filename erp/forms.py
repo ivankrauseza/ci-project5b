@@ -6,8 +6,16 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
-            'sku', 'name', 'blurb', 'stock', 'price', 'brand',
-            'collection', 'type'
+            'sku',
+            'name',
+            'blurb',
+            'stock',
+            'price',
+            'brand',
+            'collection',
+            'type',
+            'seo_keys',
+            'seo_desc'
         ]
         labels = {
             'sku': 'SKU',
@@ -18,6 +26,8 @@ class ProductForm(forms.ModelForm):
             'brand': 'Brand',
             'collection': 'Product Collection',
             'type': 'Product Type',
+            'seo_keys': 'Meta Keywords',
+            'seo_desc': 'Meta Description',
         }
 
     def __init__(self, *args, **kwargs):

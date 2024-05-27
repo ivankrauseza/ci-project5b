@@ -90,7 +90,8 @@ class Product(models.Model):
     sku = models.CharField(max_length=255, default='', unique=True)
     name = models.CharField(max_length=255, default='', null=False)
     blurb = models.TextField(default='', blank=True)
-    desc = models.TextField(default='', blank=True)
+    seo_keys = models.TextField(default='', blank=True)
+    seo_desc = models.TextField(default='', blank=True)
     stock = models.IntegerField(default=0, validators=[validate_non_negative])
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default='0.00',
@@ -255,16 +256,16 @@ class Transaction(models.Model):
 
 class SalesOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
-    number = models.CharField(max_length=50, unique=True)  # Unique sales order number
+    date = models.DateTimeField(auto_now_add=True)
+    number = models.CharField(max_length=50, unique=True)
     billing_name = models.CharField(max_length=255)
     billing_address = models.TextField()
-    billing_code = models.CharField(max_length=20, blank=True)  # Optional billing phone number
-    billing_phone = models.CharField(max_length=20, blank=True)  # Optional billing phone number
-    shipping_name = models.CharField(max_length=255, blank=True)  # Optional shipping name
-    shipping_address = models.TextField(blank=True)  # Optional shipping address
-    shipping_code = models.CharField(max_length=20, blank=True)  # Optional shipping phone number
-    shipping_phone = models.CharField(max_length=20, blank=True)  # Optional shipping phone number
+    billing_code = models.CharField(max_length=20, blank=True)
+    billing_phone = models.CharField(max_length=20, blank=True)
+    shipping_name = models.CharField(max_length=255, blank=True)
+    shipping_address = models.TextField(blank=True)
+    shipping_code = models.CharField(max_length=20, blank=True)
+    shipping_phone = models.CharField(max_length=20, blank=True)
     items_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     delivery_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     vat_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
@@ -283,7 +284,7 @@ class SalesOrder(models.Model):
 
     def __str__(self):
         return f"Sales Order: {self.number}"
-    
+
 
 class SalesOrderItem(models.Model):
     sales_order = models.ForeignKey(SalesOrder, on_delete=models.CASCADE, related_name='items')
@@ -296,24 +297,6 @@ class SalesOrderItem(models.Model):
 
     class Meta:
         unique_together = (('sales_order', 'product'),)
-
-
-"""
-class Customer(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customers')
-
-
-class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, null=True)
-    updated = models.DateTimeField(auto_now=True)
-
-
-class Support(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, null=True)
-    updated = models.DateTimeField(auto_now=True)
-"""
 
 
 class Contact(models.Model):

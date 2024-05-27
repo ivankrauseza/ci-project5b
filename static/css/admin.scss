@@ -3,3 +3,25 @@
     width: 100%;
     background-color: purple;
 }
+a.btn-edit {
+    display: inline-block;
+    background-color: purple!important;
+    color: #fff!important;
+    width: fit-content;
+    padding: 0 16px;
+    border-radius: 8px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+}
+a.btn-view {
+    display: inline-block;
+    background-color: teal!important;
+    color: #fff!important;
+    width: fit-content;
+    padding: 0 16px;
+    border-radius: 8px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+}

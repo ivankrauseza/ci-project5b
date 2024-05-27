@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block meta_keywords %}
-key, words, go, here
+{{ product.seo_keys }}
 {% endblock %}
 
 {% block meta_desc %}
-Meta Description 
+{{ product.seo_desc }}
 {% endblock %}
 
 {% load static %}
@@ -19,15 +19,22 @@ Meta Description
 <section>
             
     <div class="container">
-    
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb my-3">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'products' %}">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
-            </ol>
-        </nav>
-        
+        <div class="row p-0">
+            <div class="col-11 my-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb my-3">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'products' %}">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-1 text-end my-auto">
+                {% if user.is_authenticated and user.is_staff %}
+                <a class="btn-edit" href="{% url 'erp_product_edit' product.pk %}">Edit Product</a>
+                {% endif %}
+            </div>
+        </div>    
     </div>
     
             

@@ -13,9 +13,13 @@
     <div class="container">
 
         <div class="row my-5">
-            <div class="col-12 py-3">
+            <div class="col-11 py-3 my-auto">
                 <a href="{% url 'erp_products' %}"><i class="fa-solid fa-angle-left"></i> ERP Products</a>
                 <h1>{% if product %}Edit{% else %}Create{% endif %} Product</h1>
+                
+            </div>
+            <div class="col-1 py-3 text-end my-auto">
+                <a class="btn-view" href="{% url 'product_detail' sku=product.sku %}">View Product</a>
             </div>
             <div class="col-12 col-md-6 p-3 p-lg-5">
                 <h5>Product Data</h5>

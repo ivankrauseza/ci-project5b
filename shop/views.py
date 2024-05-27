@@ -209,7 +209,7 @@ def ProductList(request, collection_slug=None):
             Q(name__icontains=query) |
             Q(sku__icontains=query) |
             Q(blurb__icontains=query) |
-            Q(desc__icontains=query) |
+            Q(seo_desc__icontains=query) |
             Q(brand__icontains=query)
         )
         collection_name = 'Search Results'

@@ -5,10 +5,4 @@ Disallow: /order-confirmation/
 Disallow: /basket/
 Disallow: /dashboard/
 Disallow: /erp/
-
-# Allow access to user authentication and profile URLs
-Allow: /accounts/login/
-Allow: /accounts/logout/
-Allow: /accounts/signup/
-Allow: /accounts/password/reset/
-Allow: /profile/
+Disallow: /acounts/

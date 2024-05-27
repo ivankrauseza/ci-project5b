@@ -18,7 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-24y2kyhh3u)bq!8g1a2qd_9s32oe3i(yl0lp9=or!@e1$j-zo$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+debug_env = os.getenv("DEBUG")
+DEBUG = debug_env.lower() == "true" if debug_env else False
 
 SITE_ID = 1
 
@@ -98,20 +99,37 @@ WSGI_APPLICATION = 'cadence.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('AWS_NAME'),
-        'USER': os.environ.get('AWS_USER'),
-        'PASSWORD': os.environ.get('AWS_PASSWORD'),
-        'HOST': os.environ.get('AWS_HOST'),
-        'PORT': os.environ.get('AWS_PORT'),
-        'OPTIONS': {
-            'connect_timeout': 10,
-        },
+# For development
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
+
+# For production
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('AWS_NAME'),
+            'USER': os.environ.get('AWS_USER'),
+            'PASSWORD': os.environ.get('AWS_PASSWORD'),
+            'HOST': os.environ.get('AWS_HOST'),
+            'PORT': os.environ.get('AWS_PORT'),
+            'OPTIONS': {
+                'connect_timeout': 10,
+            },
+        }
+    }
 
 
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"

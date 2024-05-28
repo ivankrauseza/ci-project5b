@@ -7,13 +7,13 @@ For my Project 5 at the Code Institute I have created an MVP e-commerce platform
 - [Technology Stack](#technology-stack)
 - [Identity Toolkit](#identity-toolkit)
 - [User Experience](#user-experience)
-- [Database Schema](#database-schema)
 - [User Stories](#user-stories)
-- [Setup](#setup)
 - [Functionality](#functionality)
-- [Deployment](#deployment)
-- [Testing](#testing)
+- [Tests](#tests)
 - [Bugs](#bugs)
+- [Robots](#robots)
+- [Sitemap](#sitemap)
+- [Deployment](#deployment)
 
 
 # Technology Stack
@@ -137,19 +137,21 @@ EXAMPLE:https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/product/01234
 - SEO 100
 
 # Bugs
+## Can't send Password reset email
+- Issue with EMAIL settings using gmail to send AllAuth password reset email
 ## Product Filtering and Sorting and Search
 - BUG: Problem to filter by both brand and sort by price (Fixed)
-- BUG: Cannot sort by price on a search result
+- BUG: Cannot sort by price on a search result page
 ## AllAuth - python manage.py runserver
 - BUG: WARNINGS: account.EmailAddress: (models.W036) MySQL does not support unique constraints with conditions.
 
 
-# Robots.txt
+# Robots
 - [View](https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/robots.txt)
 - [Sitemap and Robots - lukezsmith.com](https://lukezsmith.com/post/adding-a-robotstxt-and-sitemap-to-a-django-app)
 
 
-# Sitemap.xml
+# Sitemap
 - [View](https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/sitemap.xml)
 - [Django Sitemaps](https://docs.djangoproject.com/en/5.0/ref/contrib/sitemaps/)
 

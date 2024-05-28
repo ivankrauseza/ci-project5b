@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 
 {% load i18n %}
-{% load allauth account socialaccount %}
+{% load allauth account %}
 
 {% block head_title %}
     {% trans "Sign In" %}
@@ -48,8 +48,6 @@
                 <p>
                     {% blocktrans %}Don't have an account? <a href="{{ signup_url }}">Sign Up</a>{% endblocktrans %}
                 </p>
-
-                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
 
                 </div>
             </div>

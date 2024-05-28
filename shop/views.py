@@ -790,14 +790,38 @@ def stripe_webhook(request):
 def send_order_confirmation_email(customer_email, order_number):
     sender_email = os.environ.get('EMAIL_SEND')
     sender_password = os.environ.get('EMAIL_KEY')
-    subject = "Order Confirmation"
-    body = f"Dear Customer,\n\nYour order with ID {order_number} has been successfully processed.\n\nBest Regards,\nYour Team"
+    subject = "CADENCE TOOLS: Order Confirmation"
+    # HTML email content
+    body = f"""
+    <html>
+    <body>
+        <table style="width:100%;max-width:640px;">
+            <tr>
+                <td align="center">
+                    <img src="https://cadence-v1.s3.amazonaws.com/img/logo.png" alt="cadence logo"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Dear Customer,</p>
+                    <p>Your order with ID <strong>{order_number}</strong> has been successfully processed.</p>
+                    <p>
+                    Best Regards,
+                    <br>
+                    CADENCE Sales Team
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """
 
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = customer_email
     message['Subject'] = subject
-    message.attach(MIMEText(body, 'plain'))
+    message.attach(MIMEText(body, 'html'))
 
     try:
         server = smtplib.SMTP('smtp.gmail.com', 587)

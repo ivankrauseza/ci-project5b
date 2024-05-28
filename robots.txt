@@ -1,8 +1,0 @@
-User-agent: *
-Disallow: /admin/
-Disallow: /orders/
-Disallow: /order-confirmation/
-Disallow: /basket/
-Disallow: /dashboard/
-Disallow: /erp/
-Disallow: /acounts/

@@ -88,14 +88,12 @@ class ContactForm(forms.ModelForm):
                 attrs={
                     'placeholder': 'Full Name or Singular name accepted...',
                     'class': 'form-control',
-                    'rows': 5
                     }
             ),
             'email': forms.EmailInput(
                 attrs={
                     'placeholder': 'Please enter a valid email address...',
                     'class': 'form-control',
-                    'rows': 5
                     }
             ),
             'message': forms.Textarea(

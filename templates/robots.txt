@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /erp/
+
+Sitemap: https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/sitemap.xml

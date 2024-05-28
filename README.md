@@ -1,5 +1,5 @@
 # Code Institute - PP5 Version 2
-For my Project 5 at the Code Institute I have created an MVP e-commerce platform for a brand called Cadence Tools which sells tools. The platform is integrated with Stripe Checkout, and using MySQL for the Database and AWS S3 for file storage. The main aim of this project was to make the most of the default styles and functions offered by bootstrap. As this is a second attempt I decided to enhance the look and feel of the site with a different color scheme and rethinking how to structure the models, views and templates.
+For my Project 5 at the Code Institute I have created an MVP e-commerce platform for a brand called Cadence Tools which sells tools and some other products. The platform is integrated with Stripe Checkout, and using MySQL for the Database and AWS S3 for file storage. The main aim of this project was to make the most of the default styles and functions offered by bootstrap. As this is a second attempt I decided to enhance the look and feel of the site with a different color scheme and rethinking how to structure the models, views and templates.
 
 ![Responsive Design - Powered by Bootstrap](https://cadence-v1.s3.eu-central-1.amazonaws.com/readme/ivankrause_cipp5b_responsive.png)
 
@@ -82,11 +82,59 @@ On the cookie policy page, I have implented jQuery that detects what cookies are
 
 # Tests
 Manual testing was performed on CRUD actions.
-## Authentication
-- Login (Completed)
-- Sign Up (Completed)
-- Forgot Password (Not Completed)
 
+### Core Functionality
+#### Shop
+- Can all products be viewed in list format - Yes = Pass
+- Can a user filter products by collection - Yes = Pass
+- Can a user sort the product list by price (asc and desc) - Yes = Pass
+- Can a user filter the product list by brand - Yes = Pass
+- Can a product be viewed in detail format - Yes = Pass
+- Can a logged out user add to basket - No = Pass
+- Can a logged in user add to basket - Yes = Pass
+- Can a user exceed the available quantity when adding to basket from Product detail page - No = Pass
+- Can a user exceed the available quantity when editing from Basket page - No = Fail
+- Can a user delete a basket item from Basket page - Yes = Pass
+- Can a user Pay for an order without a delivery address - No = Pass
+- Can a user Pay for an order with a valid delivery address - Yes = Pass
+- Can I Search products - Yes = Pass
+
+### Accounts (General users / Staff / Superusers)
+- Can a any user other than a superuser access the backened - No = Pass
+- Can a general user create an account - Yes = Pass
+- Can a general user edit an account - Yes = Pass
+- Can a general user delete an account - Yes = Pass
+- Can a general user see previous orders if existing - Yes = Pass
+- Can a general user see admin/erp areas - No = Pass
+- Can a general user make themselves a staff member - No = Pass
+- Can a staff member see admin/erp areas - Yes = Pass
+- Can a staff member manage products and orders if existing - Yes = Pass
+
+
+### Validator Testing 
+#### W3C HTML
+Several pages were tested and passed the validation without errors see below:
+- https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/
+- https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/products/
+- https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/product/C0123456789/
+- https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/customer-support/
+
+#### W3C CSS
+Core Stylesheet were tested and no errors were detected. It is important to note that the stylesheets were compiled from SCSS masters and imported into global.css. 
+
+#### PEP8
+I have tested my code using https://www.pythonchecker.com/ and there are some issues where the errors refer to spacing around operators. Example: ('/') where it has recommended that I put a space around the operator like (' / ') which obviously breaks the path. I also received errors where the indentation should be 4 spaces but VS Code is tabbing the indentations but the code works fine according to the VSCode linter. Generally the checker is repeating the same errors and nothing stands out after testing several views, form, models blocks of python code. Maybe I am doing something wrong. 
+
+Example, my shop/views.py scores a 68%?
+
+
+#### Lighthouse
+Overall, the Lighthouse test performed reasonably ok, across all pages. As this is an MVP I can improve given more time.
+EXAMPLE:https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/product/0123456789/
+- Performance 81
+- Accessibility 85
+- Best Practices 52
+- SEO 100
 
 # Bugs
 ## Product Filtering and Sorting and Search
@@ -95,14 +143,15 @@ Manual testing was performed on CRUD actions.
 ## AllAuth - python manage.py runserver
 - BUG: WARNINGS: account.EmailAddress: (models.W036) MySQL does not support unique constraints with conditions.
 
-# Robots file
-The robots file will block indexing of session specific URLS like a users Profile and orders, the basket, and the erp system.
+
+# Robots.txt
+- [View](https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/robots.txt)
+- [Sitemap and Robots - lukezsmith.com](https://lukezsmith.com/post/adding-a-robotstxt-and-sitemap-to-a-django-app)
 
 
-# Sitemap
+# Sitemap.xml
+- [View](https://ivankrause-ci-project5b-e803e3155c26.herokuapp.com/sitemap.xml)
 - [Django Sitemaps](https://docs.djangoproject.com/en/5.0/ref/contrib/sitemaps/)
-
-...
 
 # Deployment
 
@@ -121,10 +170,6 @@ python manage.py collectstatic
 - Deployment Method: GitHub > 'ci-project5b'
 - Choose a branch to deploy 'main'
 - Deploy Manually
-
-
-# Media
-Determine what systems to use to manage media files.
 
 
 # References / Walkthrough / Credits

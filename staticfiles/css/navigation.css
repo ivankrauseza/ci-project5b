@@ -1,0 +1,43 @@
+a {
+  color: #f6a21e;
+}
+a:hover {
+  color: #e55b13;
+}
+
+.toast {
+  float: left;
+  z-index: 9999 !important;
+}
+
+button {
+  border: solid 1px #f6a21e;
+  background-color: #f6a21e;
+  color: #fff;
+}
+button:hover {
+  border: solid 1px #e55b13;
+  background-color: #e55b13;
+  color: #fff;
+}
+
+nav {
+  font-weight: 600 !important;
+}
+
+.navbar-brand {
+  display: flex;
+  padding: 0 !important;
+}
+.navbar-brand img {
+  padding: 0 !important;
+}
+
+.nav-link {
+  font-weight: 600 !important;
+}
+
+.form-control[type=search] {
+  background-color: white;
+  border: solid 2px rgba(51, 51, 51, 0.25);
+}/*# sourceMappingURL=navigation.css.map */

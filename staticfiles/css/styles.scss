@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+body {
+    font-family: "Lato", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.toolbox {
+    position: relative;
+    color: #fff;
+    a, button {
+        color: #fff;
+        &:hover {
+            color: #f6a21e!important;
+        }
+    }
+    .support {
+        i {
+            padding-right: 4px;
+        }
+    }
+}
+
+header {
+    float: left;
+    width: 100%;
+    background-color: #f6a21e;
+    z-index: 3;
+}
+
+main {
+    background-color: #fff;
+    float: left;
+    width: 100%;
+    z-index: 2;
+}
+
+footer {
+    float: left;
+    width: 100%;
+    background-color: #333;
+    z-index: 1;
+    a {
+        color: #fff;
+        &:hover {
+            color: #f6a21e;
+        }
+    }
+    .container {
+        font-weight: 500;
+    }
+}
+
+// TYPOGRAPHY
+h1 {
+    font-weight: 700;
+    padding: 0 0 16px 0;
+}
+h2 {
+    font-weight: 700;
+}
+h3 {
+    font-weight: 700;
+}
+h4 {
+    font-weight: 700;
+}
+h5 {
+    font-weight: 700;
+}
+h6 {
+    font-weight: 700;
+}
+p {
+    max-width: 75ch;
+    padding: 0 0 16px 0;
+    margin: 0;
+}
+ul, ol {
+    margin: 0 0 16px 16px;
+    padding: 0 0 0 0;
+    &.no_bullet {
+        margin: 0 0 16px 0;
+        padding: 0 0 0 0;
+        list-style: none;
+    }
+}
+li {
+    max-width: 75ch;
+}
+article {
+    width: 100%;
+    max-width: 75ch;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin: 0 0;
+    }
+}
+
+// MEDIA
+img {
+    max-width: 100%;
+}
+
+
+
+// BOOTSTRAP ADJUSTMENTS
+
+.container {
+    width: 100%;
+    max-width: 1680px;
+}
+@media screen and (max-width: 1680px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+@media screen and (max-width: 1400px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 95%;
+    }
+}
+@media screen and (max-width: 992px) {
+    .container {
+        max-width: 100%;
+    }
+}
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 768px;
+    }
+}
+@media screen and (max-width: 576px) {
+    .container {
+        max-width: 576px;
+    }
+}
+
+
+// CUSTOM CSS
+.brands {
+    img {
+        opacity: 0.5;
+    }
+}

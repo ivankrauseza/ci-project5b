@@ -180,6 +180,7 @@
   background-color: #104210;
 }
 .detail .status {
+  display: block;
   line-height: 48px;
 }
 

@@ -46,7 +46,7 @@
                     {% for media in media_files %}
                         <img src="{{ media.file.url }}" alt="{{ product.name }}">
                     {% empty %}
-                        <img src="{% static 'img/placeholder_no_image.png' %}">
+                        <img src="{% static 'img/placeholder_no_image.png' %}" alt="No Image Placeholder">
                     {% endfor %}
                 </div>
 
@@ -65,9 +65,9 @@
                     <div class="my-5">
                         <small>
                             {% if product.blocked %}
-                                <div class="status">
+                                <span class="status">
                                     <span>Status: <strong class="text-danger">Unvailable</strong></span>
-                                </div>
+                                </span>
                             {% else %}
                                 {% if user.is_authenticated %}
                                     {% if product_in_basket %}

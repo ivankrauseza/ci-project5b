@@ -1,0 +1,41 @@
+a {
+    color: #f6a21e;
+    &:hover {
+        color: #e55b13;
+    }
+}
+
+.toast {
+    float: left;
+    z-index: 9999!important;
+}
+
+button {
+    border:solid 1px #f6a21e;
+    background-color: #f6a21e;
+    color: #fff;
+    &:hover {
+        border:solid 1px #e55b13;
+        background-color: #e55b13;
+        color: #fff;
+    }
+}
+
+// BOOTSTRAP
+nav {
+    font-weight: 600!important;
+}
+.navbar-brand {
+    display: flex;
+    padding: 0!important;
+    img {
+        padding: 0!important;
+    }
+}
+.nav-link {
+    font-weight: 600!important;
+}
+.form-control[type="search"] {
+    background-color: rgba($color: #fff, $alpha: 1);
+    border:solid 2px rgba($color: #333, $alpha: 0.25);
+}

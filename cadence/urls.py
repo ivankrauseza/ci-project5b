@@ -5,6 +5,7 @@ from django.contrib import sitemaps
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from shop.sitemaps import ProductSitemap, StaticViewSitemap
+from django.views.generic import TemplateView
 
 
 sitemaps = {
@@ -18,5 +19,6 @@ urlpatterns = [
     path('', include('shop.urls')),
     path('', include('erp.urls')),
     path('accounts/', include('allauth.urls')),
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

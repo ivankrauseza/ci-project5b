@@ -18,8 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-24y2kyhh3u)bq!8g1a2qd_9s32oe3i(yl0lp9=or!@e1$j-zo$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug_env = os.getenv("DEBUG")
-DEBUG = debug_env.lower() == "true" if debug_env else False
+DEBUG = False
 
 SITE_ID = 1
 
@@ -51,13 +50,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+    'django.contrib.sites',
     # 'storages',
     # 'corsheaders',
     'shop',
     'erp',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth.socialaccount',
 ]
 
 

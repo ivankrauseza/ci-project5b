@@ -1,0 +1,244 @@
+// COLLECTIONS
+.handtools,
+.powertools,
+.testingequipment,
+.consumables,
+.storage,
+.wearables,
+.feature {
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+
+
+// BASKET
+.basket_item {
+    position: relative;
+    .basket_count {
+        color: #fff;
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translate(-50%, -0%);
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        border-radius: 8px;
+    }
+}
+
+/* Optional CSS styling for the slider */
+.product-slider {
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.slick-list {
+    z-index: 777!important;
+    padding: 0 32px;
+}
+.slick-prev,
+.slick-next {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    position: absolute;
+    z-index:999!important;
+    border: none!important;
+    background-color: #fff;
+    color: #FC4629;
+    top:45%;
+    transform: translate(0%, -50%);
+    &:hover {
+        background-color: #fff;
+        color: #FC4629;
+    }
+}
+.slick-prev {
+    left: 0;
+}
+.slick-next {
+    right: 0;
+}
+
+/* Styling for the navigation dots */
+.slick-dots {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.slick-dots li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.slick-dots li button {
+    font-size: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.slick-dots li button:before {
+    content: "\2022";
+    font-size: 18px;
+    color: #999; /* Change the color of the navigation dots */
+}
+
+.slick-dots li button[aria-selected="true"]:before {
+    color: #FC5C42; /* Change the color of the navigation dots */
+}
+
+
+.price {
+    color: #7a871e!important;
+}
+
+.card {
+    border: none;
+    border-radius: 0;
+    img.card-img-top {
+        border-radius: 0;
+        transform: scale(0.9);
+        transition: all .2s ease-in-out;
+    }
+    .card-title {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    sup.sku {
+        color: #999;
+    }
+    &:hover {
+        img.card-img-top {
+            transform: scale(1);
+        }
+    }
+}
+
+.detail {
+    small {
+        color: #888;
+    }
+    h1, p {
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+    }
+    form {
+        float: left;
+        display: block;
+        width: 100%;
+    }
+    label {
+        float: left;
+        display: block;
+        width: 100%;
+        line-height: 32px;
+    }
+    .quantity {
+        float: left;
+        width: fit-content;
+        line-height: 48px;
+        height: 48px;
+        padding: 0 1em;
+        border:none;
+        background-color: #eeeeee;
+    }
+    .btn-cart {
+        float: left;
+        width: fit-content;
+        line-height: 48px;
+        height: 48px;
+        padding: 0 1em;
+        border:none;
+        border-radius: 0;
+        background-color: #7a871e;
+        color: #fff;
+        font-size: 0.9em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        i {
+            margin-left: 8px;
+        }
+        &:hover {
+            background-color: #104210;
+        }
+    }
+    .status {
+        line-height: 48px;
+    }
+}
+
+// BASKET CSS
+#basket {
+    .accordion {
+        h2 {
+            button {
+                border: none;
+                position: relative;
+                background-color: #f9f9f9;
+                strong {
+                    position: absolute;
+                    top:50%;
+                    left: 16px;
+                    transform: translate(0%, -50%);
+                    span {
+                        display: none;
+                        font-size: 14px;
+                    }
+                }
+                small {
+                    font-size: 14px;
+                    line-height: 100%;
+                    position: absolute;
+                    top:50%;
+                    right: 64px;
+                    transform: translate(0%, -50%);
+                    span {
+                        font-weight: 700;
+                    }
+                }
+                &:hover {
+                    background-color: #eeeeee;
+                    color: #333;
+                    strong {
+                        span {
+                            display: inline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .overview {
+        .btn-pay {
+            background-color: #7a871e;
+            color: #fff;
+            &:hover {
+                background-color: #104210;
+            }
+        }
+    }
+}
+
+// SALES ORDERS:
+article.salesorder {
+    width: 100%;
+    max-width: 640px;
+    h1, h2, h3, h4, h5, h6, p, th, td, small {
+        font-size: 14px!important;
+    }
+    h1 {
+        font-size: 20px!important;
+    }
+}

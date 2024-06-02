@@ -1,0 +1,143 @@
+{% extends 'base-erp.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+
+
+    <div class="container">
+        <div class="row px-3 px-lg-4">
+            <div class="row">
+                <div class="col-12 text-start my-auto">
+                    <small>
+                        <a href="{% url 'erp' %}"><i class="fa-solid fa-angle-left"></i> Dashboard</a>
+                    </small>
+                    <h1>Company Information</h1>
+                </div>
+                
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 p-3 border rounded bg-white">
+
+                                <div class="row">
+                                    <div class="col-11 text-start">
+                                        <p>
+                                            <sub>Company Name</sub>
+                                            <br>
+                                            {% if company_info.name %} 
+                                            {{ company_info.name }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>Physical Address</sub>
+                                            <br>
+                                            {% if company_info.address %} 
+                                            {{ company_info.address }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>Phone Number</sub>
+                                            <br>
+                                            {% if company_info.phone %} 
+                                            {{ company_info.phone }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>Email Address</sub>
+                                            <br>
+                                            {% if company_info.email %} 
+                                            {{ company_info.email }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>Website</sub>
+                                            <br>
+                                            {% if company_info.website %} 
+                                            {{ company_info.website }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>TAX Number</sub>
+                                            <br>
+                                            {% if company_info.tax_id %} 
+                                            {{ company_info.tax_id }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>VAT Number</sub>
+                                            <br>
+                                            {% if company_info.vat_id %} 
+                                            {{ company_info.vat_id }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>CRO Number</sub>
+                                            <br>
+                                            {% if company_info.reg_id %} 
+                                            {{ company_info.reg_id }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                            
+                                        <p>
+                                            <sub>Date of incorporation</sub>
+                                            <br>
+                                            {% if company_info.incorporation_date %} 
+                                            {{ company_info.incorporation_date }} 
+                                            {% else %} no name {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-1 text-end">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editCompany">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="editCompany" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCompanyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-4" id="editCompanyLabel">Company Information</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.urls import reverse
+from erp.models import Company, StaffProfile
 from shop.models import Product, Media, SalesOrder
-from .forms import ProductForm, MediaForm, SalesOrderStatusForm
+from .forms import CompanyForm, ProductForm, MediaForm, SalesOrderStatusForm
 from django.contrib import messages
 
 
@@ -119,3 +120,29 @@ def erp_order_detail(request, order_number):
         'form': form,
     }
     return render(request, 'erp-order-detail.html', context)
+
+
+@login_required
+def company(request):
+    # Get the existing Company entry if it exists
+    company_info = Company.objects.first()
+
+    if request.method == 'POST':
+        form = CompanyForm(request.POST, instance=company_info)
+        if form.is_valid():
+            form.save()
+            return redirect('erp_company')  # Replace with your actual success URL
+    else:
+        form = CompanyForm(instance=company_info)
+
+    context = {
+        'company_info': company_info,
+        'form': form
+    }
+    return render(request, 'erp-company.html', context)
+
+
+@login_required
+def staff(request):
+    staff_list = StaffProfile.objects.all()
+    return render(request, 'erp-staff.html', {'staff_list': staff_list})

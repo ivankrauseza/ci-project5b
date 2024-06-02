@@ -1,0 +1,72 @@
+{% extends 'base-erp.html' %}
+
+{% block title %}ERP{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_desc %}{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.is_staff %}
+
+
+
+    <div class="container">
+        <div class="row px-3 px-lg-4">
+            <div class="row">
+                <div class="col-12 text-start my-auto">
+                    <small>
+                        <a href="{% url 'erp' %}"><i class="fa-solid fa-angle-left"></i> Dashboard</a>
+                    </small>
+                    <h1>Employees</h1>
+                </div>
+                
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 p-3 border rounded bg-white">
+
+                                <div class="row">
+                                    <div class="col-12 text-start">
+                                        
+                                        <h1>ERP Staff List</h1>
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staff_list %}
+            <tr>
+                <td>{{ staff.user.username }}</td>
+                <td>{{ staff.user.email }}</td>
+                <td>{{ staff.phone_number }}</td>
+                <td>{{ staff.address }}</td>
+                <td>{{ staff.department }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+{% else %}
+    <p>You are either not logged in or not a staff member.</p>
+{% endif %}
+
+{% endblock %}

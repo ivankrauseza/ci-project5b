@@ -12,4 +12,9 @@ urlpatterns = [
     path('erp/media/delete/<int:pk>/', product_media_delete.as_view(), name='media_delete'),
     path('erp/orders/', views.erp_orders, name='erp_orders'),
     path('erp/order/<str:order_number>/', views.erp_order_detail, name='erp_order_detail'),
+    # Company Information
+    path('erp/company-information/', views.company, name='erp_company'),
+    path('erp/staff/', views.staff, name='erp_staff'),
+    path('erp/staff/profilekey/', views.staff, name='erp_staff'),
+    # Add other URLs as needed
 ]

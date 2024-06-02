@@ -1,0 +1,64 @@
+#erp {
+    
+    .fixed-column {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        overflow-y: auto;
+        
+        &.col-2-fixed {
+            width: 16.666667%;
+        }
+        &.col-10-fixed {
+            width: 83.333333%;
+            right: 0;
+            margin-left: 16.666667%;
+        }
+    }
+
+    h1 {
+        padding-bottom:16px;
+        font-weight: 400;
+        font-size: 1.5em;
+        color: #055160;
+    }
+    p {
+        padding-bottom:8px;
+        sub, sup {
+            opacity: 0.5;
+        }
+    }
+    
+    // ERP NAV
+    .erp-nav {
+        .btn {
+            border: none;
+            background-color: #0aa2c0;
+            color: #ffffff;
+            i {
+                opacity: 0.5;
+            }
+            &:hover {
+                background-color: #087990;
+            }
+        }
+    }
+
+    // ERP CONTENT
+    .erp-content {
+        min-height: 100vh;
+        a {
+            color: #0aa2c0;
+            &:hover {
+                color: #087990;
+            }
+            .prod_list {
+                float: left;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

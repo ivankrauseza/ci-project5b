@@ -5,8 +5,8 @@
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}
-
 {% block content %}
+
     <div class="allauth">
         <div class="container py-5">
             <div class="row">
@@ -14,7 +14,7 @@
                 
 
                     {% url 'account_signup' as action_url %}
-                    
+
                     {% element form form=form method="post" action=action_url tags="entrance,signup" %}
                         {% slot body %}
                         

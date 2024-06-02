@@ -39,3 +39,13 @@ nav {
     background-color: rgba($color: #fff, $alpha: 1);
     border:solid 2px rgba($color: #333, $alpha: 0.25);
 }
+.navbar-toggler {
+    border:none!important;
+    box-shadow: none!important;
+    &:focus {
+        border:none!important;
+        .navbar-toggler-icon {
+            transform: rotate(45deg);
+        }
+    }
+}

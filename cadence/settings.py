@@ -18,14 +18,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 SITE_ID = 1
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'ivankrause-ci-project5b-e803e3155c26.herokuapp.com'
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -57,7 +56,7 @@ INSTALLED_APPS = [
     'erp',
     'allauth',
     'allauth.account',
-    # 'allauth.socialaccount',
+    'allauth.socialaccount',
 ]
 
 

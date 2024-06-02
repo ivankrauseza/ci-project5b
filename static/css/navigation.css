@@ -40,4 +40,15 @@ nav {
 .form-control[type=search] {
   background-color: white;
   border: solid 2px rgba(51, 51, 51, 0.25);
+}
+
+.navbar-toggler {
+  border: none !important;
+  box-shadow: none !important;
+}
+.navbar-toggler:focus {
+  border: none !important;
+}
+.navbar-toggler:focus .navbar-toggler-icon {
+  transform: rotate(45deg);
 }/*# sourceMappingURL=navigation.css.map */

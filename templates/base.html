@@ -79,7 +79,17 @@
         </a>
       </div>
       <div class="col-6 text-end px-3 py-2 my-auto text-white">
-        Staff Account
+        {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+                <small>Welcome, Admin!</small>
+            {% elif user.is_staff %}
+                <small>Welcome, Staff Member!</small>
+            {% else %}
+                <small>Welcome, Customer!</small>
+            {% endif %}
+        {% else %}
+            <small>Welcome, Guest!</small>
+        {% endif %}
       </div>
     </div>
   </div>
